@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="So Coif' — Barbier expert depuis 2015. Coupe, rasage et soins masculins à Maubeuge.">
+<title>So Coif' — Barbier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav>
+  <div class="logo"><span>So</span> Coif'</div>
+  <div class="nav-links">
+    <a href="#services">Services</a>
+    <a href="#galerie">Galerie</a>
+    <a href="#temoignages">Témoignages</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <button class="nav-cta" onclick="document.getElementById('rdv').scrollIntoView({behavior:'smooth'})">Réserver</button>
+  <button class="nav-burger" onclick="document.querySelector('.nav-mobile').classList.toggle('open')" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-mobile">
+  <a href="#services" onclick="this.closest('.nav-mobile').classList.remove('open')">Services</a>
+  <a href="#galerie" onclick="this.closest('.nav-mobile').classList.remove('open')">Galerie</a>
+  <a href="#temoignages" onclick="this.closest('.nav-mobile').classList.remove('open')">Témoignages</a>
+  <a href="#contact" onclick="this.closest('.nav-mobile').classList.remove('open')">Contact</a>
+  <a href="#rdv" onclick="this.closest('.nav-mobile').classList.remove('open')" style="color:var(--gold);">Réserver</a>
+</div>
+
+<!-- HERO -->
+<section id="accueil">
+  <div class="hero-left">
+    <div class="hero-badge">Barbier expert · Depuis 2015</div>
+    <h1 class="hero-title">L'art du<br>soin <em>masculin</em><br>à la française</h1>
+    <p class="hero-sub">Un espace de prestige où chaque coupe devient une cérémonie. Savoir-faire artisanal, produits d'exception, attention absolue.</p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.getElementById('rdv').scrollIntoView({behavior:'smooth'})">Prendre rendez-vous</button>
+      <button class="btn-ghost" onclick="document.getElementById('services').scrollIntoView({behavior:'smooth'})">Nos services</button>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img big"><img src="images/barbier-portrait.jpg" alt="Barbier So Coif au travail"></div>
+    <div class="hero-img"><img src="images/coupe-precision.png" alt="Coupe de précision"></div>
+    <div class="hero-img"><img src="images/atelier-socoif.jpg" alt="Atelier So Coif"></div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-tag">Prestations</div>
+  <h2 class="section-title">Nos services<br>d'exception</h2>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <div class="service-name">Coupe classique</div>
+      <div class="service-desc">Coupe personnalisée aux ciseaux ou à la tondeuse, finition au rasoir de précision.</div>
+      <div class="service-price">25 € <span>/ 45 min</span></div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <div class="service-name">Rasage à l'ancienne</div>
+      <div class="service-desc">Rasage au coupe-chou avec serviettes chaudes et baume après-rasage artisanal.</div>
+      <div class="service-price">30 € <span>/ 40 min</span></div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <div class="service-name">Coupe + Barbe</div>
+      <div class="service-desc">La formule complète — coupe, taille de barbe et soin visage inclus.</div>
+      <div class="service-price">45 € <span>/ 75 min</span></div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">04</div>
+      <div class="service-name">Taille de barbe</div>
+      <div class="service-desc">Modelage et taille de barbe à la mesure de votre visage et de votre style.</div>
+      <div class="service-price">20 € <span>/ 30 min</span></div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">05</div>
+      <div class="service-name">Soin hydratant</div>
+      <div class="service-desc">Masque visage, gommage et hydratation en profondeur avec des produits premium.</div>
+      <div class="service-price">35 € <span>/ 50 min</span></div>
+    </div>
+    <div class="service-card">
+      <div class="service-num">06</div>
+      <div class="service-name">Formule prestige</div>
+      <div class="service-desc">L'expérience So Coif' dans sa totalité : coupe, rasage, soin et massage crânien.</div>
+      <div class="service-price">75 € <span>/ 2h</span></div>
+    </div>
+  </div>
+  <div class="services-cta">
+    <a href="#rdv">Toutes nos prestations</a>
+  </div>
+</section>
+
+<!-- GALERIE -->
+<section id="galerie">
+  <div class="section-tag">Réalisations</div>
+  <h2 class="section-title">La galerie</h2>
+  <div class="gallery-grid">
+    <div class="gallery-item span-row"><img src="images/barbier-portrait.jpg" alt="Portrait barbier"></div>
+    <div class="gallery-item"><img src="images/barbier-dyson.png" alt="Barbier et Dyson"></div>
+    <div class="gallery-item"><img src="images/coupe-precision.png" alt="Coupe de précision"></div>
+    <div class="gallery-item"><img src="images/salon-bac.jpg" alt="Espace bac à shampoing"></div>
+    <div class="gallery-item"><img src="images/atelier-socoif.jpg" alt="Atelier So Coif"></div>
+  </div>
+</section>
+
+<!-- RDV -->
+<section id="rdv" class="rdv-section">
+  <div class="rdv-inner">
+    <div>
+      <div class="section-tag">Réservation</div>
+      <h2 class="section-title">Prenez<br>rendez-vous</h2>
+      <div class="gold-line"></div>
+      <p class="rdv-intro">Réservez votre moment de soin en quelques secondes. Nous vous confirmons votre créneau par SMS dans l'heure.</p>
+      <div class="rdv-infos">
+        <div class="info-row">
+          <div class="info-icon">⏱</div>
+          <div>
+            <div class="info-label">Horaires</div>
+            <div class="info-val">Mar – Sam · 9h00 – 19h00</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">☎</div>
+          <div>
+            <div class="info-label">Téléphone</div>
+            <div class="info-val">06 00 00 00 00</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="rdv-form">
+      <div class="form-row">
+        <div class="form-field"><label>Prénom</label><input type="text" placeholder="Thomas"></div>
+        <div class="form-field"><label>Nom</label><input type="text" placeholder="Dupont"></div>
+      </div>
+      <div class="form-field"><label>Téléphone</label><input type="tel" placeholder="+33 6 00 00 00 00"></div>
+      <div class="form-field">
+        <label>Prestation</label>
+        <select>
+          <option>Coupe classique — 25 €</option>
+          <option>Rasage à l'ancienne — 30 €</option>
+          <option>Coupe + Barbe — 45 €</option>
+          <option>Taille de barbe — 20 €</option>
+          <option>Soin hydratant — 35 €</option>
+          <option>Formule prestige — 75 €</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-field"><label>Date</label><input type="date"></div>
+        <div class="form-field">
+          <label>Créneau</label>
+          <select>
+            <option>09:00</option><option>10:00</option><option>11:00</option>
+            <option>14:00</option><option>15:00</option><option>16:00</option><option>17:00</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-primary btn-full">Confirmer ma réservation</button>
+    </div>
+  </div>
+</section>
+
+<!-- TÉMOIGNAGES -->
+<section id="temoignages">
+  <div class="section-tag">Avis clients</div>
+  <h2 class="section-title">Ce qu'ils<br>disent</h2>
+  <div class="testi-grid">
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">Une expérience unique. La qualité du rasage au coupe-chou est incomparable. Je ne vais plus nulle part ailleurs.</div>
+      <div class="testi-author">Antoine M.</div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">L'ambiance, le savoir-faire, les produits... Tout est pensé dans les moindres détails. Un vrai moment de luxe accessible.</div>
+      <div class="testi-author">Karim B.</div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <div class="testi-stars">★★★★★</div>
+      <div class="testi-text">Mon barbier depuis 3 ans. Régulier, précis, à l'écoute. La formule Prestige vaut vraiment le détour.</div>
+      <div class="testi-author">Julien R.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div>
+      <div class="section-tag">Nous trouver</div>
+      <h2 class="section-title">Contact &<br>localisation</h2>
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-label">Adresse</div>
+          <div class="contact-val">12 rue de la République<br>59600 Maubeuge</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-label">Horaires</div>
+          <div class="contact-val">Mardi – Samedi<br>9h00 → 19h00</div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-label">Contact</div>
+          <div class="contact-val">06 00 00 00 00<br>socoif@email.fr</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="contact-img"><img src="images/salon-bac.jpg" alt="Intérieur salon So Coif"></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo"><em>So</em> Coif'</div>
+  <div class="footer-copy">© 2025 So Coif' · Tous droits réservés</div>
+  <div class="footer-links">
+    <a href="#">Instagram</a>
+    <a href="#">Mentions légales</a>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
