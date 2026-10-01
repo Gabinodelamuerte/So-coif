@@ -1,0 +1,49 @@
+name: Déployer sur GitHub Pages
+
+on:
+  push:
+    branches: [main, claude/acces-ressource-sthyfb]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          # Adresse de GitHub Pages : https://<compte>.github.io/<dépôt>
+          SITE: https://${{ github.repository_owner }}.github.io
+          BASE: /${{ github.event.repository.name }}
+          PUBLIC_HOST: github
+          # Sans back-end : le formulaire ouvre la messagerie. Pour un vrai envoi, créer la
+          # variable de dépôt FORM_ENDPOINT (adresse Formspree), voir DEPLOIEMENT.md.
+          PUBLIC_FORM_MODE: mailto
+          PUBLIC_FORM_ENDPOINT: ${{ vars.FORM_ENDPOINT }}
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

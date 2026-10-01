@@ -1,4 +1,5 @@
 ---
+import { u } from '../utils/url';
 import Base from '../layouts/Base.astro';
 import salon from '../data/salon.json';
 import avis from '../data/avis.json';
@@ -43,7 +44,7 @@ import avis from '../data/avis.json';
         <li>Soins profonds et capillaires</li><li>Taille de barbe</li><li>Rasage à l'ancienne</li>
         <li>Coiffure de mariage</li><li>Chignon et bar à chignon</li><li>Offres étudiants</li>
       </ul>
-      <p style="margin-top:1.5rem"><a class="more" href="/prestations">Voir les tarifs détaillés</a></p>
+      <p style="margin-top:1.5rem"><a class="more" href={u('/prestations')}>Voir les tarifs détaillés</a></p>
     </section>
 
     <section>

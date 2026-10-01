@@ -1,4 +1,5 @@
 ---
+import { u } from '../utils/url';
 import Base from '../layouts/Base.astro';
 import salon from '../data/salon.json';
 import data from '../data/prestations.json';
@@ -39,7 +40,7 @@ import data from '../data/prestations.json';
 
     <p style="margin-top:2rem">
       <a class="btn" href={salon.reservation} target="_blank" rel="noopener">Réserver sur Planity</a>
-      <a class="btn ghost" href="/contact">Une question ? Écrivez-nous</a>
+      <a class="btn ghost" href={u('/contact')}>Une question ? Écrivez-nous</a>
     </p>
     <p class="fine">{data.noteBasDePage}</p>
   </div>

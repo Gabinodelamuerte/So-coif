@@ -1,6 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
+import { u } from '../utils/url';
 import salon from '../data/salon.json';
+// Mode d'envoi du formulaire, choisi à la construction du site (voir DEPLOIEMENT.md) :
+//  - Formspree si PUBLIC_FORM_ENDPOINT est défini ;
+//  - mailto si PUBLIC_FORM_MODE=mailto (hébergement sans back-end, ex. GitHub Pages) ;
+//  - sinon Netlify Forms.
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT as string | undefined;
+const mode = endpoint ? 'formspree' : import.meta.env.PUBLIC_FORM_MODE === 'mailto' ? 'mailto' : 'netlify';
 const options = [
   'Coupe homme', "Rasage à l'ancienne", 'Coupe femme', 'Couleur ou mèches',
   'Color Brilliance, 39 €', 'Nutrition Absolue, 29 €', 'Reconstruction Profonde, 49 €',
@@ -39,9 +46,16 @@ const options = [
 
       <div>
         <h2>Envoyez-nous un message</h2>
-        <form class="msg" id="msgForm" name="contact" method="POST" action="/merci" data-netlify="true" netlify-honeypot="champ-piege">
-          <input type="hidden" name="form-name" value="contact" />
-          <p class="honey" aria-hidden="true"><label>Ne pas remplir : <input name="champ-piege" tabindex="-1" autocomplete="off" /></label></p>
+        <form
+          class="msg" id="msgForm" name="contact" method="POST"
+          data-mode={mode} data-email={salon.email} data-merci={u('/merci')} data-endpoint={endpoint}
+          action={mode === 'formspree' ? endpoint : mode === 'mailto' ? `mailto:${salon.email}` : u('/merci')}
+          enctype={mode === 'mailto' ? 'text/plain' : undefined}
+          data-netlify={mode === 'netlify' ? 'true' : undefined}
+          netlify-honeypot={mode === 'netlify' ? '_gotcha' : undefined}
+        >
+          {mode === 'netlify' && <input type="hidden" name="form-name" value="contact" />}
+          <p class="honey" aria-hidden="true"><label>Ne pas remplir : <input name="_gotcha" tabindex="-1" autocomplete="off" /></label></p>
           <div class="two">
             <label>Prénom<input name="prenom" autocomplete="given-name" required /></label>
             <label>Nom<input name="nom" autocomplete="family-name" required /></label>
@@ -67,20 +81,30 @@ const options = [
 
 <script>
   // Envoi sans quitter la page quand c'est possible ; sans JavaScript, le formulaire
-  // s'envoie normalement vers /merci (Netlify Forms).
+  // s'envoie normalement (Netlify Forms, Formspree ou messagerie selon le mode).
   const form = document.getElementById('msgForm') as HTMLFormElement | null;
   const erreur = document.getElementById('errmsg');
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      const mode = form.dataset.mode;
+      const d = new FormData(form);
+      if (d.get('_gotcha')) return; // robot : on ne fait rien
+      if (mode === 'mailto') {
+        const sujet = 'Demande via le site' + (d.get('presta') ? ' : ' + d.get('presta') : '');
+        const corps = `Prénom : ${d.get('prenom')}\nNom : ${d.get('nom')}\nE-mail : ${d.get('email')}\nTéléphone : ${d.get('tel') || ''}\nPrestation : ${d.get('presta') || ''}\n\n${d.get('message')}`;
+        window.location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(sujet)}&body=${encodeURIComponent(corps)}`;
+        return;
+      }
       const bouton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
       bouton.disabled = true;
       if (erreur) erreur.hidden = true;
       try {
-        const corps = new URLSearchParams(new FormData(form) as any).toString();
-        const rep = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: corps });
+        const rep = mode === 'formspree'
+          ? await fetch(form.dataset.endpoint as string, { method: 'POST', headers: { Accept: 'application/json' }, body: d })
+          : await fetch(import.meta.env.BASE_URL, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(d as any).toString() });
         if (!rep.ok) throw new Error(String(rep.status));
-        window.location.assign('/merci');
+        window.location.assign(form.dataset.merci as string);
       } catch {
         if (erreur) erreur.hidden = false;
         bouton.disabled = false;

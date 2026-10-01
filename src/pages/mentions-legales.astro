@@ -2,6 +2,8 @@
 import Base from '../layouts/Base.astro';
 import salon from '../data/salon.json';
 const l = salon.legal;
+const hebergeur = import.meta.env.PUBLIC_HOST === 'github' ? l.hebergeurGithub : l.hebergeur;
+const modeMailto = !import.meta.env.PUBLIC_FORM_ENDPOINT && import.meta.env.PUBLIC_FORM_MODE === 'mailto';
 ---
 <Base
   title="Mentions légales | So Coif' Willems"
@@ -30,11 +32,13 @@ const l = salon.legal;
     </section>
     <section>
       <h2>Hébergement</h2>
-      <p>{l.hebergeur}.</p>
+      <p>{hebergeur}.</p>
     </section>
     <section>
       <h2>Données personnelles</h2>
-      <p>Ce site n'utilise aucun cookie de suivi. Les données saisies dans le formulaire de contact (prénom, nom, e-mail, téléphone facultatif, message) sont transmises au salon par le service d'hébergement du site, uniquement pour répondre à votre demande. Elles ne sont ni revendues ni utilisées à d'autres fins. Pour demander l'accès ou la suppression de vos données, écrivez à <a href={`mailto:${salon.email}`}>{salon.email}</a>. La réservation se fait sur Planity, soumise à ses propres conditions.</p>
+      <p>Ce site n'utilise aucun cookie de suivi. {modeMailto
+          ? "Le formulaire de contact ne transmet rien lui-même : il prépare un e-mail dans votre application de messagerie, que vous choisissez d'envoyer ou non."
+          : "Les données saisies dans le formulaire de contact (prénom, nom, e-mail, téléphone facultatif, message) sont transmises au salon par un service tiers, uniquement pour répondre à votre demande."} Elles ne sont ni revendues ni utilisées à d'autres fins. Pour demander l'accès ou la suppression de vos données, écrivez à <a href={`mailto:${salon.email}`}>{salon.email}</a>. La réservation se fait sur Planity, soumise à ses propres conditions.</p>
     </section>
     <section>
       <h2>Crédits</h2>

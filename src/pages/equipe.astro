@@ -1,4 +1,5 @@
 ---
+import { u } from '../utils/url';
 import Base from '../layouts/Base.astro';
 import equipe from '../data/equipe.json';
 ---
@@ -23,7 +24,7 @@ import equipe from '../data/equipe.json';
         <div><h3>Expertise Keune</h3><p>Formées et certifiées aux produits et aux techniques Keune.</p></div>
         <div><h3>Écoute personnalisée</h3><p>Chaque consultation est unique et adaptée à vos besoins.</p></div>
       </div>
-      <p style="margin-top:1.5rem"><a class="more" href="/avis">Voir ce qu'en disent les clients</a></p>
+      <p style="margin-top:1.5rem"><a class="more" href={u('/avis')}>Voir ce qu'en disent les clients</a></p>
     </section>
   </div>
 </Base>

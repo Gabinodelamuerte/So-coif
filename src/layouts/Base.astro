@@ -1,4 +1,5 @@
 ---
+import { u } from '../utils/url';
 import '@fontsource/bevan/latin-400.css';
 import '@fontsource/bevan/latin-ext-400.css';
 import '@fontsource/im-fell-english/latin-400.css';
@@ -17,9 +18,10 @@ interface Props {
   schema?: boolean;
 }
 const { title, description, home = false, noindex = false, schema = false } = Astro.props;
-const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+// En construction (format "file"), le chemin se termine par .html : on le retire.
+const path = Astro.url.pathname.replace(/\/?index\.html$/, '/').replace(/\.html$/, '').replace(/\/$/, '') || '/';
 const canonical = new URL(path, Astro.site).href;
-const ogImage = new URL('/og-image.jpg', Astro.site).href;
+const ogImage = new URL(u('/og-image.jpg'), Astro.site).href;
 
 const liens = [
   { href: '/', label: 'Accueil' },
@@ -87,7 +89,7 @@ const jsonLd = {
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
     <meta name="theme-color" content="#24160f" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href={u('/favicon.svg')} type="image/svg+xml" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:site_name" content={salon.nom} />
@@ -110,12 +112,12 @@ const jsonLd = {
     <div class="dot" id="dot" aria-hidden="true"><span></span></div>
 
     <header class="nav" id="nav">
-      <a class="brand" href="/">So Coif'</a>
+      <a class="brand" href={u('/')}>So Coif'</a>
       <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="navLinks">Menu</button>
       <nav aria-label="Navigation principale">
         <ul class="links" id="navLinks">
           {liens.map((l) => (
-            <li><a href={l.href} aria-current={path === l.href ? 'page' : undefined}>{l.label}</a></li>
+            <li><a href={u(l.href)} aria-current={path === u(l.href) ? 'page' : undefined}>{l.label}</a></li>
           ))}
           <li><a class="book" href={salon.reservation} target="_blank" rel="noopener">Réserver</a></li>
         </ul>

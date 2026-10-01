@@ -29,6 +29,7 @@
     "naf": "9602A",
     "forme": "société à responsabilité limitée créée en 2007",
     "_todoHebergeur": "TODO : adapter si le site n'est pas hébergé chez Netlify.",
-    "hebergeur": "Netlify, Inc., 512 2nd Street, Suite 200, San Francisco, CA 94107, États-Unis"
+    "hebergeur": "Netlify, Inc., 512 2nd Street, Suite 200, San Francisco, CA 94107, États-Unis",
+    "hebergeurGithub": "GitHub, Inc. (GitHub Pages), 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis"
   }
 }

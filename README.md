@@ -47,8 +47,10 @@ Dans `prestations.json`, chaque catégorie a un `id`, un `filtre` (libellé du b
 
 ## Formulaire de contact
 
-Netlify Forms : anti-spam par champ piège (honeypot) et filtre Netlify, confirmation sur `/merci`. Sans JavaScript, le formulaire fonctionne aussi. En local (`npm run dev`), l'envoi échoue et le message d'erreur s'affiche : c'est normal, il faut être hébergé sur Netlify. Détails et alternatives (Formspree) dans [`DEPLOIEMENT.md`](DEPLOIEMENT.md).
+Par défaut Netlify Forms (Formspree ou ouverture de la messagerie selon les variables de construction) : anti-spam par champ piège (honeypot) et filtre Netlify, confirmation sur `/merci`. Sans JavaScript, le formulaire fonctionne aussi. En local (`npm run dev`), l'envoi échoue et le message d'erreur s'affiche : c'est normal, il faut être hébergé sur Netlify. Détails et alternatives (Formspree) dans [`DEPLOIEMENT.md`](DEPLOIEMENT.md).
 
 ## Mise en ligne
+
+GitHub Pages (workflow inclus) ou Netlify : détails dans `DEPLOIEMENT.md`. Variables de construction utiles : `SITE`, `BASE` (chemin de base), `PUBLIC_FORM_MODE=mailto`, `PUBLIC_FORM_ENDPOINT` (Formspree), `PUBLIC_HOST=github`.
 
 Voir [`DEPLOIEMENT.md`](DEPLOIEMENT.md).

@@ -1,20 +1,21 @@
 ---
+import { u } from '../utils/url';
 import salon from '../data/salon.json';
 ---
 <footer class="foot">
   <div>
-    <a class="brand" href="/">So Coif'</a>
+    <a class="brand" href={u('/')}>So Coif'</a>
     <p>{salon.slogan}</p>
     <p class="maquette">Maquette non officielle, en attente de validation par le salon.</p>
   </div>
   <div>
     <h3>Le salon</h3>
     <ul>
-      <li><a href="/salon">Notre histoire</a></li>
-      <li><a href="/prestations">Prestations et tarifs</a></li>
-      <li><a href="/equipe">L'équipe</a></li>
-      <li><a href="/galerie">Galerie</a></li>
-      <li><a href="/avis">Avis clients</a></li>
+      <li><a href={u('/salon')}>Notre histoire</a></li>
+      <li><a href={u('/prestations')}>Prestations et tarifs</a></li>
+      <li><a href={u('/equipe')}>L'équipe</a></li>
+      <li><a href={u('/galerie')}>Galerie</a></li>
+      <li><a href={u('/avis')}>Avis clients</a></li>
     </ul>
   </div>
   <div>
@@ -22,8 +23,8 @@ import salon from '../data/salon.json';
     <p>{salon.adresse.rue}<br />{salon.adresse.codePostal} {salon.adresse.ville}</p>
     <p><a href={`tel:${salon.telephoneInternational}`}>{salon.telephone}</a><br /><a href={`mailto:${salon.email}`}>{salon.email}</a></p>
     <ul>
-      <li><a href="/contact">Contact et horaires</a></li>
-      <li><a href="/mentions-legales">Mentions légales</a></li>
+      <li><a href={u('/contact')}>Contact et horaires</a></li>
+      <li><a href={u('/mentions-legales')}>Mentions légales</a></li>
     </ul>
   </div>
 </footer>

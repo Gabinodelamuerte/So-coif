@@ -2,6 +2,18 @@
 
 Le site est 100 % statique : `npm run build` produit le dossier `dist/`. Recommandation : **Netlify**, car le formulaire de contact y fonctionne sans rien configurer (offre gratuite suffisante).
 
+## 0. Option la plus simple : GitHub Pages (adresse en github.io)
+
+Le dépôt contient déjà le workflow `.github/workflows/pages.yml`. Une fois pour toutes, dans GitHub :
+
+1. **Settings → Pages → Build and deployment → Source : GitHub Actions**.
+2. Le workflow se lance à chaque push sur `main` ou sur la branche `claude/acces-ressource-sthyfb` (onglet **Actions** pour suivre). Si le déploiement depuis cette branche est refusé (règle de l'environnement `github-pages`), fusionnez la pull request dans `main`, ou autorisez la branche dans **Settings → Environments → github-pages → Deployment branches**.
+3. Le site est alors en ligne sur **https://gabinodelamuerte.github.io/So-coif/**.
+
+Limites de GitHub Pages : pas de back-end, donc **Netlify Forms ne marche pas**. Par défaut, le formulaire de contact ouvre la messagerie du visiteur avec le message prêt à envoyer. Pour un vrai envoi sans quitter le site : créer un formulaire sur formspree.io (gratuit), puis dans **Settings → Secrets and variables → Actions → Variables**, ajouter la variable `FORM_ENDPOINT` avec l'adresse Formspree (`https://formspree.io/f/xxxx`) et relancer le workflow.
+
+Pour brancher plus tard socoif.com sur GitHub Pages : **Settings → Pages → Custom domain**, mais il faudra alors construire le site sans le chemin `/So-coif` (retirer `BASE` dans le workflow et mettre `SITE` à `https://www.socoif.com`).
+
 ## 1. Publier sur Netlify
 
 1. Créer un compte sur netlify.com et choisir **Add new site → Import an existing project**.
@@ -28,7 +40,7 @@ Le site est 100 % statique : `npm run build` produit le dossier `dist/`. Recomma
 
 ### Autre solution : Formspree
 
-Dans `src/pages/contact.astro`, remplacer les attributs de `<form>` par `action="https://formspree.io/f/VOTRE_ID" method="POST"`, retirer `data-netlify` et `netlify-honeypot`, renommer le champ piège en `_gotcha`, et dans le script de la page poster vers l'adresse Formspree avec l'en-tête `Accept: application/json` au lieu de `/`.
+Dans `src/pages/contact.astro`, remplacer les attributs de `<form>` par `action="https://formspree.io/f/VOTRE_ID" method="POST"`, retirer `data-netlify` et `netlify-honeypot`, et dans le script de la page poster vers l'adresse Formspree avec l'en-tête `Accept: application/json` au lieu de `/`.
 
 ## 4. Autres hébergeurs
 
