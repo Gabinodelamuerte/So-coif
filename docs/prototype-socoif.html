@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>So Coif', coiffeur et barbier à Willems</title>
+<meta name="description" content="So Coif', salon de coiffure et barbier à Willems depuis 2007 : coupe, couleur, soins, rasage à l'ancienne. Réservation en ligne.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bevan:ital@0;1&family=IM+Fell+English:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: dark;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    --noyer: #24160f;
+    --cuir: #7a2e24;
+    --laiton: #c19a4a;
+    --kraft: #d2bb8c;
+    --encre: #1d120c;
+    --os: #eadcc0;
+    --display: 'Bevan', 'Rockwell', 'Georgia', serif;
+    --texte: 'IM Fell English', 'Georgia', 'Times New Roman', serif;
+  }
+  html{ scroll-padding-top: 5rem; scroll-behavior: smooth; }
+  *, *::before, *::after{ box-sizing: inherit; }
+  body{
+    margin: 0;
+    background-color: var(--noyer);
+    background-image:
+      repeating-linear-gradient(90deg, rgba(0,0,0,.30) 0 2px, transparent 2px 148px),
+      repeating-linear-gradient(90deg, rgba(255,210,150,.04) 0 62px, rgba(0,0,0,.06) 62px 118px, transparent 118px 148px),
+      linear-gradient(180deg, #2b1a11, #1c110a);
+    background-attachment: fixed;
+    color: var(--os);
+    font-family: var(--texte);
+    font-size: 1.15rem;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a{ color: inherit; }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible{ outline: 3px solid var(--laiton); outline-offset: 3px; }
+
+  /* Décor fixe */
+  #gl{ position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; display: block; }
+  html:not(.is-home) #gl{ display: none; }
+  .grain{
+    position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .22; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+  .vignette{
+    position: fixed; inset: 0; z-index: 1; pointer-events: none;
+    background: radial-gradient(ellipse at 50% 45%, transparent 45%, rgba(8,4,2,.62) 100%);
+  }
+
+  /* Navigation */
+  .nav{
+    position: fixed; top: 0; left: 0; right: 0; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    padding: calc(.85rem + env(safe-area-inset-top, 0px)) clamp(1rem, 4vw, 3rem) 1.4rem;
+    background: linear-gradient(180deg, rgba(28,17,10,.94), rgba(28,17,10,.62) 65%, transparent);
+  }
+  .brand{ font-family: var(--display); font-size: 1.55rem; text-decoration: none; color: var(--os); white-space: nowrap; }
+  .links{ display: flex; align-items: center; gap: 1.5rem; list-style: none; margin: 0; padding: 0; }
+  .links a{
+    text-decoration: none; font-style: italic; font-size: 1.1rem; padding: .2rem 0;
+    border-bottom: 2px solid transparent; transition: border-color .2s ease;
+  }
+  .links a:hover{ border-color: rgba(193,154,74,.6); }
+  .links a[aria-current="page"]{ border-color: var(--laiton); }
+  .links .book{
+    font-family: var(--display); font-style: normal; font-size: .95rem;
+    padding: .5rem 1rem; background: var(--cuir); border: 2px solid var(--laiton);
+  }
+  .menu-toggle{
+    display: none; font-family: var(--texte); font-style: italic; font-size: 1.05rem;
+    color: var(--os); background: rgba(36,22,15,.85); border: 1px solid var(--laiton);
+    padding: .4rem .9rem; cursor: pointer;
+  }
+  @media (max-width: 980px){
+    .menu-toggle{ display: block; }
+    .links{
+      display: none; position: absolute; top: 100%; right: clamp(1rem, 4vw, 3rem); left: clamp(1rem, 4vw, 3rem);
+      flex-direction: column; align-items: flex-start; gap: .9rem; padding: 1.25rem;
+      background: rgba(28,17,10,.97); border: 1px solid var(--laiton);
+    }
+    .nav.open .links{ display: flex; }
+  }
+
+  /* Pages */
+  .page{ display: none; }
+  .page.active{ display: block; }
+
+  /* Accueil : scènes plein écran */
+  .scene{
+    position: relative; z-index: 2;
+    display: flex; align-items: center;
+    min-height: 100vh; min-height: 100svh;
+  }
+  .copy{ width: min(40rem, 100%); padding-inline: clamp(1.25rem, 7vw, 7rem); text-align: left; }
+  h1, h2, h3{ font-family: var(--display); font-weight: 400; margin: 0; }
+  h1{
+    font-size: clamp(3.4rem, 9.5vw, 8.2rem); line-height: .95; letter-spacing: -.01em;
+    text-shadow: 0 2px 0 #0d0704, 0 10px 34px rgba(0,0,0,.65);
+  }
+  h2{
+    font-size: clamp(2.2rem, 5vw, 3.8rem); line-height: 1.05; margin-bottom: 1.25rem;
+    text-shadow: 0 2px 0 #0d0704, 0 8px 28px rgba(0,0,0,.6);
+  }
+  p{ margin: 0 0 1rem; max-width: 34rem; font-size: clamp(1.15rem, 1.5vw, 1.35rem); }
+  .lead{ margin-top: 1.5rem; font-size: clamp(1.25rem, 1.9vw, 1.6rem); font-style: italic; }
+  .more{ color: var(--laiton); font-style: italic; }
+
+  .btn{
+    display: inline-block; margin: 1rem .75rem 0 0; padding: .8rem 1.5rem;
+    font-family: var(--display); font-size: 1.05rem; text-decoration: none; cursor: pointer;
+    color: var(--os); background: var(--cuir); border: 2px solid var(--laiton);
+    box-shadow: 0 4px 0 #3b1611, 0 14px 30px rgba(0,0,0,.5);
+    transition: transform .15s ease, box-shadow .15s ease;
+  }
+  .btn:hover{ transform: translateY(2px); box-shadow: 0 2px 0 #3b1611, 0 8px 20px rgba(0,0,0,.5); }
+  .btn.ghost{ background: rgba(36,22,15,.7); }
+
+  .hero .copy > *{ opacity: 0; transform: translateY(14px); }
+  .ready .hero .copy > *{ opacity: 1; transform: none; transition: opacity .9s ease, transform .9s ease; }
+  .ready .hero .copy > :nth-child(2){ transition-delay: .25s; }
+  .ready .hero .copy > :nth-child(3){ transition-delay: .5s; }
+  .ready .hero .copy > :nth-child(4){ transition-delay: .9s; }
+  .hint{ margin-top: 3rem; font-style: italic; opacity: .75; }
+
+  .story{ min-height: 110vh; }
+  .story .copy{ margin-left: auto; min-height: 110vh; display: flex; flex-direction: column; justify-content: center; }
+  .story.team .copy{ min-height: 100vh; }
+
+  .razor{ min-height: 240vh; align-items: flex-start; padding-top: 14vh; }
+  .razor .copy{ position: sticky; top: 14vh; align-self: flex-start; }
+  .steps{ list-style: none; counter-reset: s; margin: 1.75rem 0 0; padding: 0; display: grid; gap: 1.1rem; }
+  .steps li{
+    counter-increment: s; position: relative; padding-left: 3.4rem;
+    opacity: .25; transform: translateX(-8px); transition: opacity .5s ease, transform .5s ease;
+  }
+  .steps li.on{ opacity: 1; transform: none; }
+  .steps li::before{ content: counter(s); position: absolute; left: 0; top: -.2rem; font-family: var(--display); font-size: 2rem; color: var(--laiton); }
+  .steps h3{ font-size: 1.3rem; }
+  .steps p{ margin: .1rem 0 0; font-size: 1.1rem; }
+
+  .menu{ justify-content: center; padding: 14vh 1.25rem; }
+  .board, .paper{
+    color: var(--encre);
+    border: 3px double var(--encre);
+    background:
+      radial-gradient(circle at 16px 16px, #a98333 0 3px, #4d3510 4px 5px, transparent 6px),
+      radial-gradient(circle at calc(100% - 16px) 16px, #a98333 0 3px, #4d3510 4px 5px, transparent 6px),
+      radial-gradient(circle at 16px calc(100% - 16px), #a98333 0 3px, #4d3510 4px 5px, transparent 6px),
+      radial-gradient(circle at calc(100% - 16px) calc(100% - 16px), #a98333 0 3px, #4d3510 4px 5px, transparent 6px),
+      radial-gradient(ellipse at 30% 20%, rgba(255,240,200,.35), transparent 60%),
+      var(--kraft);
+    box-shadow: 0 34px 70px rgba(0,0,0,.6), inset 0 0 70px rgba(110,75,25,.4);
+  }
+  .board{ width: min(38rem, 100%); padding: clamp(1.75rem, 4.5vw, 3rem); transform: rotate(-1deg); }
+  .board h2{ color: var(--encre); text-shadow: none; text-align: center; margin-bottom: 1.5rem; }
+  .prices{ list-style: none; margin: 0; padding: 0; display: grid; gap: .9rem; }
+  .prices li, .row{ display: flex; align-items: baseline; gap: .6rem; font-size: 1.3rem; }
+  .dots{ flex: 1; border-bottom: 2px dotted rgba(29,18,12,.55); transform: translateY(-.25em); min-width: 1rem; }
+  .p{ font-family: var(--display); font-size: 1.15rem; white-space: nowrap; }
+  .board .note{ margin: 1.75rem 0 0; font-style: italic; font-size: 1.05rem; text-align: center; max-width: none; }
+  .board .note a{ color: var(--cuir); }
+
+  .crew{ list-style: none; margin: 0 0 2rem; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.1rem 1.75rem; }
+  .crew li{ display: flex; flex-direction: column; padding-top: .6rem; border-top: 1px solid rgba(193,154,74,.5); }
+  .crew strong{ font-family: var(--display); font-weight: 400; font-size: 1.35rem; color: var(--laiton); }
+  .crew span{ font-size: 1.05rem; font-style: italic; }
+
+  .hours{ margin: 1.5rem 0 1.25rem; max-width: 26rem; }
+  .hours div{ display: flex; justify-content: space-between; gap: 1rem; padding: .45rem 0; border-bottom: 1px solid rgba(234,220,192,.25); }
+  .hours dt{ font-style: italic; }
+  .hours dd{ margin: 0; font-family: var(--display); font-size: 1rem; }
+  .fine{ margin-top: 3rem; font-size: .95rem; opacity: .6; max-width: 30rem; }
+  .alt{ margin-top: 1.25rem; }
+  .alt a{ color: var(--laiton); }
+
+  /* Pages intérieures */
+  .doc{
+    position: relative; z-index: 2; max-width: 66rem; margin: 0 auto;
+    padding: clamp(6.5rem, 15vh, 8.5rem) clamp(1.25rem, 6vw, 4rem) 4rem;
+  }
+  .doc h1{ font-size: clamp(2.6rem, 6.5vw, 4.8rem); margin-bottom: 1rem; }
+  .doc h2{ font-size: clamp(1.7rem, 3.4vw, 2.4rem); margin: 3rem 0 1rem; text-shadow: none; }
+  .doc h3{ font-size: 1.3rem; }
+  .doc p{ max-width: 42rem; }
+  .doc .intro{ font-size: clamp(1.25rem, 2vw, 1.5rem); font-style: italic; max-width: 40rem; }
+  .doc section{ border-top: 1px solid rgba(193,154,74,.35); margin-top: 3rem; padding-top: 0; }
+  .doc section > h2:first-child{ margin-top: 1.5rem; }
+  .cols{ display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.75rem 2.5rem; margin-top: 1.25rem; }
+  .cols h3{ color: var(--laiton); margin-bottom: .35rem; }
+  .cols p{ font-size: 1.15rem; margin: 0; }
+  .facts{ list-style: none; margin: 1.25rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 1rem 3rem; }
+  .facts li{ display: flex; flex-direction: column; }
+  .facts strong{ font-family: var(--display); font-weight: 400; font-size: 2.6rem; line-height: 1; color: var(--laiton); }
+  .facts span{ font-style: italic; }
+  .taglist{ list-style: none; margin: 1.25rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .6rem; }
+  .taglist li{ border: 1px solid rgba(193,154,74,.55); padding: .25rem .8rem; font-style: italic; font-size: 1.05rem; }
+
+  .teamlist{ list-style: none; margin: 2rem 0 0; padding: 0; display: grid; gap: 2rem; }
+  .teamlist li{ display: grid; grid-template-columns: 4rem 1fr; gap: 1.25rem; align-items: start; padding-top: 1.5rem; border-top: 1px solid rgba(193,154,74,.35); }
+  .mono{
+    width: 4rem; height: 4rem; display: grid; place-items: center; border-radius: 50%;
+    border: 2px solid var(--laiton); background: rgba(122,46,36,.6);
+    font-family: var(--display); font-size: 1.35rem;
+  }
+  .teamlist .role{ font-style: italic; color: var(--laiton); margin: .1rem 0 .5rem; font-size: 1.1rem; }
+  .teamlist p{ margin: 0; }
+
+  .chips{ display: flex; flex-wrap: wrap; gap: .6rem; margin: 1.75rem 0 1.5rem; }
+  .chip{
+    font-family: var(--texte); font-style: italic; font-size: 1.05rem; cursor: pointer;
+    color: var(--os); background: rgba(36,22,15,.7); border: 1px solid var(--laiton); padding: .4rem .95rem;
+  }
+  .chip[aria-pressed="true"]{ background: var(--cuir); }
+  .paper{ padding: clamp(1.25rem, 4vw, 2.75rem); }
+  .pgroup{ margin-bottom: 2.5rem; }
+  .pgroup[hidden]{ display: none; }
+  .pgroup:last-child{ margin-bottom: 0; }
+  .paper h2{ color: var(--encre); font-size: 1.75rem; margin: 0 0 .35rem; text-shadow: none; }
+  .paper .gi{ font-style: italic; margin: 0 0 1.1rem; font-size: 1.05rem; color: #3b2a1b; max-width: none; }
+  .plist{ list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
+  .plist .row{ font-size: 1.2rem; }
+  .plist .d{ margin: .1rem 0 0; font-size: 1rem; font-style: italic; color: #3b2a1b; max-width: 46rem; }
+  .plist .d span{ font-style: normal; font-family: var(--display); font-size: .85rem; margin-right: .5rem; }
+
+  .frames{ display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: 1.75rem; margin-top: 2rem; }
+  .frame{
+    aspect-ratio: 4 / 5; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .4rem;
+    text-align: center; padding: 1rem; margin: 0;
+    border: 10px solid #3b2418; outline: 2px solid var(--laiton); outline-offset: -6px;
+    background: radial-gradient(ellipse at 40% 30%, #3a2519, #1e120b);
+    box-shadow: inset 0 0 40px rgba(0,0,0,.6), 0 14px 30px rgba(0,0,0,.5);
+  }
+  .frame strong{ font-family: var(--display); font-weight: 400; font-size: 1.15rem; }
+  .frame span{ font-style: italic; font-size: .95rem; opacity: .7; }
+
+  .score{ display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem; }
+  .score strong{ font-family: var(--display); font-weight: 400; font-size: clamp(4.5rem, 12vw, 7.5rem); line-height: 1; color: var(--laiton); }
+  .stars{ letter-spacing: .15em; color: var(--laiton); font-size: 1.5rem; }
+  .subs{ margin: 1.5rem 0 0; max-width: 28rem; }
+  .subs div{ display: flex; justify-content: space-between; padding: .4rem 0; border-bottom: 1px solid rgba(234,220,192,.25); }
+  .subs dt{ font-style: italic; }
+  .subs dd{ margin: 0; font-family: var(--display); font-size: 1rem; }
+  .voices{ list-style: none; margin: 1.5rem 0 0; padding: 0; display: grid; gap: 1.5rem; }
+  .voices li{ padding-left: 1.25rem; border-left: 3px solid var(--cuir); max-width: 42rem; }
+  .voices p{ margin: 0 0 .35rem; }
+  .voices small{ font-style: italic; opacity: .7; font-size: 1rem; }
+
+  .contact-grid{ display: grid; grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr)); gap: 2.5rem; margin-top: 1.5rem; }
+  .contact-grid h2{ margin-top: 0; }
+  .coords{ font-style: normal; display: grid; gap: 1rem; }
+  .coords strong{ display: block; font-family: var(--display); font-weight: 400; color: var(--laiton); font-size: 1.05rem; }
+  .coords a{ color: var(--os); }
+  form.msg{ display: grid; gap: 1rem; }
+  form.msg .two{ display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  form.msg label{ display: grid; gap: .3rem; font-style: italic; }
+  form.msg input, form.msg select, form.msg textarea{
+    font: inherit; font-style: normal; color: var(--os); background: rgba(0,0,0,.3);
+    border: 1px solid rgba(193,154,74,.6); padding: .65rem .8rem; width: 100%;
+  }
+  form.msg select option{ color: #1d120c; background: #eadcc0; }
+  form.msg textarea{ min-height: 8rem; resize: vertical; }
+  .okmsg{ font-style: italic; color: var(--laiton); margin-top: .5rem; }
+  .okmsg[hidden]{ display: none; }
+  .legal p, .legal li{ font-size: 1.15rem; }
+  .legal ul{ max-width: 42rem; padding-left: 1.2rem; }
+
+  /* Pied de page */
+  .foot{
+    position: relative; z-index: 2; margin-top: 2rem;
+    padding: 3rem clamp(1.25rem, 6vw, 4rem) 5.5rem; border-top: 1px solid rgba(193,154,74,.35);
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 2rem; font-size: 1.05rem;
+    background: rgba(20,12,7,.55);
+  }
+  .foot .brand{ display: inline-block; margin-bottom: .5rem; }
+  .foot ul{ list-style: none; margin: 0; padding: 0; display: grid; gap: .35rem; }
+  .foot a{ text-decoration: none; }
+  .foot a:hover{ text-decoration: underline; }
+  .foot p{ font-size: 1rem; margin: 0 0 .5rem; }
+  .foot h3{ font-size: 1.05rem; color: var(--laiton); margin-bottom: .6rem; }
+
+  /* Bouton son */
+  .snd{
+    position: fixed; z-index: 10; left: 1rem; bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+    padding: .55rem 1rem; font-family: var(--texte); font-size: 1rem; font-style: italic;
+    color: var(--os); background: rgba(36,22,15,.82); border: 1px solid var(--laiton); cursor: pointer;
+  }
+  .snd[aria-pressed="true"]{ background: var(--cuir); }
+  html:not(.is-home) .snd{ display: none; }
+
+  /* Curseur : un point blanc qui grossit quand une action est possible (souris uniquement) */
+  .dot{
+    position: fixed; left: 0; top: 0; z-index: 9999; pointer-events: none;
+    opacity: 0; transition: opacity .2s ease; will-change: transform; mix-blend-mode: difference;
+  }
+  .dot.on{ opacity: 1; }
+  .dot span{
+    display: block; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: #fff;
+    transition: transform .22s cubic-bezier(.2,.8,.2,1);
+  }
+  .dot.big span{ transform: scale(3.4); }
+  .dot.down span{ transform: scale(.75); }
+  html.has-dot, html.has-dot *{ cursor: none !important; }
+  @media (hover: none), (pointer: coarse){ .dot{ display: none; } }
+
+  /* Repli sans WebGL */
+  .css-pole{ display: none; }
+  .no-gl #gl{ display: none; }
+  .no-gl.is-home .css-pole{
+    display: block; position: fixed; z-index: 0; right: 14vw; top: 14vh; width: 110px; height: 68vh;
+    border-radius: 55px; border: 6px solid #c19a4a;
+    background: repeating-linear-gradient(-45deg, #b3261e 0 24px, #efe6d2 24px 48px, #1f3a6b 48px 72px, #efe6d2 72px 96px);
+    background-size: 136px 136px; animation: climb 3s linear infinite; box-shadow: 0 30px 60px rgba(0,0,0,.5);
+  }
+  @keyframes climb{ to{ background-position: 0 -136px; } }
+
+  @media (max-aspect-ratio: 19/20){
+    .scene .copy{ padding-top: 2.5rem; background: linear-gradient(180deg, rgba(36,22,15,0), rgba(36,22,15,.9) 24%); }
+    .hero{ align-items: flex-end; }
+    .story .copy{ margin-left: 0; justify-content: flex-end; }
+    .razor{ padding-top: 0; }
+    .razor .copy{ position: relative; top: auto; margin-top: 46vh; }
+    .no-gl.is-home .css-pole{ right: 50%; transform: translateX(50%); width: 80px; height: 34vh; top: 6vh; }
+  }
+  @media (max-width: 560px){
+    .crew{ grid-template-columns: 1fr; }
+    form.msg .two{ grid-template-columns: 1fr; }
+    .teamlist li{ grid-template-columns: 3rem 1fr; gap: .9rem; }
+    .mono{ width: 3rem; height: 3rem; font-size: 1.05rem; }
+    .prices li, .row{ font-size: 1.1rem; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior: auto; }
+    .hero .copy > *{ opacity: 1; transform: none; }
+    .steps li, .btn, .dot span, .links a{ transition: none; }
+    .no-gl.is-home .css-pole{ animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="css-pole" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+<div class="dot" id="dot" aria-hidden="true"><span></span></div>
+
+<header class="nav" id="nav">
+  <a class="brand" href="#/">So Coif'</a>
+  <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="navLinks">Menu</button>
+  <ul class="links" id="navLinks">
+    <li><a href="#/" data-r="home">Accueil</a></li>
+    <li><a href="#/salon" data-r="salon">Le salon</a></li>
+    <li><a href="#/prestations" data-r="prestations">Prestations</a></li>
+    <li><a href="#/equipe" data-r="equipe">Équipe</a></li>
+    <li><a href="#/galerie" data-r="galerie">Galerie</a></li>
+    <li><a href="#/avis" data-r="avis">Avis</a></li>
+    <li><a href="#/contact" data-r="contact">Contact</a></li>
+    <li><a class="book" href="https://www.planity.com/so-coif-willems-59780" target="_blank" rel="noopener">Réserver</a></li>
+  </ul>
+</header>
+
+<button class="snd" id="snd" type="button" aria-pressed="false">Son coupé</button>
+
+<main id="app">
+
+  <!-- ============ ACCUEIL (expérience immersive) ============ -->
+  <div class="page active" id="page-home" data-route="home">
+    <section class="scene hero">
+      <div class="copy">
+        <h1>So Coif'</h1>
+        <p class="lead">Coiffeur et barbier à Willems depuis 2007. Coupe, couleur, soins, et le rasage au coupe-chou comme autrefois.</p>
+        <div>
+          <a class="btn" href="https://www.planity.com/so-coif-willems-59780" target="_blank" rel="noopener">Réserver sur Planity</a>
+          <a class="btn ghost" href="#/prestations">Voir les prestations</a>
+        </div>
+        <p class="hint">Faites défiler, la porte est ouverte.</p>
+      </div>
+    </section>
+
+    <section class="scene story">
+      <div class="copy">
+        <h2>Un salon humain, au cœur de Willems.</h2>
+        <p>Depuis 2007, So Coif' tient à une idée simple : que chacun reparte avec une coupe qui lui ressemble, et l'envie de revenir. Dix-neuf ans plus tard, six passionnés y travaillent, entre coiffeurs, coloristes et barbiers.</p>
+        <p>Chez JB, coiffer va au-delà des ciseaux et des mélanges de couleur. On travaille la matière, le volume et la lumière, pour les femmes comme pour les hommes, avec ou sans barbe. Chaque rendez-vous commence par un vrai échange sur vos envies.</p>
+        <p><a class="more" href="#/salon">Découvrir le salon</a></p>
+      </div>
+    </section>
+
+    <section class="scene razor">
+      <div class="copy">
+        <h2>Le rasage à l'ancienne</h2>
+        <p>Une heure dédiée, avec des tracés de barbe faits selon un protocole italien. Chaque étape a son geste, et le coupe-chou ne sort qu'au bon moment.</p>
+        <ol class="steps">
+          <li><h3>La préparation</h3><p>Eau chaude, serviette chaude et huile de pré-rasage pour assouplir la peau.</p></li>
+          <li><h3>Le blaireau</h3><p>Savon ou crème à raser, montés en mousse au blaireau pour redresser le poil.</p></li>
+          <li><h3>Le coupe-chou</h3><p>La lame droite, affûtée, pour un rasage net et respectueux de la peau.</p></li>
+          <li><h3>Le baume</h3><p>Un après-rasage pour apaiser et hydrater, avant de repartir.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="scene menu">
+      <div class="board">
+        <h2>La carte</h2>
+        <ul class="prices">
+          <li><span>Coupe homme</span><span class="dots"></span><span class="p">29 €</span></li>
+          <li><span>Coupe étudiant et enfant garçon</span><span class="dots"></span><span class="p">25 €</span></li>
+          <li><span>Coupe et rasage à l'ancienne</span><span class="dots"></span><span class="p">69 €</span></li>
+          <li><span>Coupe, taille de barbe et soin</span><span class="dots"></span><span class="p">53 €</span></li>
+          <li><span>Coupe courte femme et séchage</span><span class="dots"></span><span class="p">41 €</span></li>
+          <li><span>Shampoing, coupe, brushing mi-longs</span><span class="dots"></span><span class="p">48 €</span></li>
+          <li><span>Couleur, coupe et brushing</span><span class="dots"></span><span class="p">76 à 108 €</span></li>
+          <li><span>Consultation technique</span><span class="dots"></span><span class="p">dès 20 €</span></li>
+        </ul>
+        <p class="note">Réduction étudiante appliquée au salon, pensez à la signaler. <a href="#/prestations">Voir toute la carte</a>, avec les soins, lissages, permanentes et maquillages.</p>
+      </div>
+    </section>
+
+    <section class="scene story team">
+      <div class="copy">
+        <h2>Six passionnés, une même maison.</h2>
+        <ul class="crew">
+          <li><strong>Jean-Benoît</strong><span>Gérant, JB pour les habitués</span></li>
+          <li><strong>Lorena</strong><span>Responsable du salon, coloriste</span></li>
+          <li><strong>Illan</strong><span>Coiffeur et barbier</span></li>
+          <li><strong>Nathan</strong><span>Apprenti coiffeur homme</span></li>
+          <li><strong>Serena</strong><span>Apprentie, mèches et couleur</span></li>
+          <li><strong>Camille</strong><span>Apprentie, soins capillaires</span></li>
+        </ul>
+        <p>Note de 5,0 sur plus de mille avis Planity. <a class="more" href="#/equipe">Rencontrer l'équipe</a> ou <a class="more" href="#/avis">lire les avis</a>.</p>
+      </div>
+    </section>
+
+    <section class="scene visit">
+      <div class="copy">
+        <h2>Poussez la porte</h2>
+        <p>27 rue Jean-Baptiste Lebas, 59780 Willems. On vous fait asseoir, on s'occupe de vous.</p>
+        <dl class="hours">
+          <div><dt>Mardi au vendredi</dt><dd>9h30 à 19h</dd></div>
+          <div><dt>Samedi</dt><dd>9h à 18h</dd></div>
+          <div><dt>Dimanche et lundi</dt><dd>Fermé</dd></div>
+        </dl>
+        <a class="btn" href="https://www.planity.com/so-coif-willems-59780" target="_blank" rel="noopener">Réserver sur Planity</a>
+        <a class="btn ghost" href="#/contact">Nous écrire</a>
+        <p class="alt"><a href="tel:+33320346716">03 20 34 67 16</a> ou <a href="mailto:socoif@gmail.com">socoif@gmail.com</a></p>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ LE SALON ============ -->
+  <div class="page" id="page-salon" data-route="salon">
+    <div class="doc">
+      <h1>Le salon</h1>
+      <p class="intro">Un salon de quartier ouvert en 2007, où l'on prend le temps d'écouter avant de couper.</p>
+
+      <section>
+        <h2>Notre histoire</h2>
+        <p>So Coif' s'est construit autour d'une idée simple : que chaque client reparte avec une coupe qui lui ressemble et une expérience qui donne envie de revenir. Aujourd'hui, l'équipe de six réunit coiffeurs, coloristes et barbiers.</p>
+        <p>Le salon est tenu par JB, pour qui la coiffure est un art : travailler la matière, le volume et la lumière, ciseler, sculpter, sublimer. L'approche est la même pour une clientèle féminine ou masculine, cheveux courts ou longs, naturels ou colorés, avec ou sans barbe.</p>
+        <p>Chaque proposition part d'un diagnostic de vos cheveux et d'une étude de votre morphologie, pour une coupe ou une couleur qui vous va vraiment. Les habitués retiennent aussi un très bon rapport qualité-prix et des offres pour les étudiants.</p>
+        <ul class="facts">
+          <li><strong>19</strong><span>ans d'expérience</span></li>
+          <li><strong>6</strong><span>experts passionnés</span></li>
+          <li><strong>5,0</strong><span>sur Planity, plus de 1 000 avis</span></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Nos engagements</h2>
+        <div class="cols">
+          <div><h3>Expertise Keune</h3><p>L'équipe est formée et certifiée aux techniques et aux produits de la gamme professionnelle Keune.</p></div>
+          <div><h3>Conseil personnalisé</h3><p>Chaque rendez-vous commence par un échange pour comprendre vos envies. Une consultation technique de 20 minutes est aussi proposée, dès 20 €.</p></div>
+          <div><h3>Produits de qualité</h3><p>Des soins haut de gamme, choisis pour des résultats durables et respectueux du cheveu.</p></div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Ce que l'on fait ici</h2>
+        <p>Des coupes pour toute la famille, du rasage à l'ancienne à la coiffure de mariage.</p>
+        <ul class="taglist">
+          <li>Coupe femme</li><li>Coupe homme</li><li>Coupe garçon et fille</li><li>Coiffeur enfant</li>
+          <li>Coloration</li><li>Mèches</li><li>Décoloration</li><li>Patine</li>
+          <li>Permanente</li><li>Lissage</li><li>Brushing</li><li>Cheveux longs</li>
+          <li>Soins profonds et capillaires</li><li>Taille de barbe</li><li>Rasage à l'ancienne</li>
+          <li>Coiffure de mariage</li><li>Chignon et bar à chignon</li><li>Offres étudiants</li>
+        </ul>
+        <p style="margin-top:1.5rem"><a class="more" href="#/prestations">Voir les tarifs détaillés</a></p>
+      </section>
+
+      <section>
+        <h2>Bon à savoir</h2>
+        <div class="cols">
+          <div><h3>Accès</h3><p>Entrée et parking accessibles en fauteuil roulant, toilettes sur place, d'après la fiche Google du salon.</p></div>
+          <div><h3>Réservation</h3><p>En ligne 24 h sur 24 avec confirmation immédiate, via Planity, ou par téléphone au 03 20 34 67 16.</p></div>
+          <div><h3>Réseaux</h3><p>Retrouvez le salon sur <a href="https://www.facebook.com/p/Socoif-100054956426354/" target="_blank" rel="noopener">Facebook</a>, où il signe « La vie est belle ».</p></div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- ============ PRESTATIONS ============ -->
+  <div class="page" id="page-prestations" data-route="prestations">
+    <div class="doc">
+      <h1>Prestations et tarifs</h1>
+      <p class="intro">La carte complète du salon. Réduction étudiante appliquée au salon sur la plupart des prestations, pensez à la signaler.</p>
+
+      <div class="chips" role="group" aria-label="Filtrer par catégorie">
+        <button class="chip" type="button" data-f="all" aria-pressed="true">Tout</button>
+        <button class="chip" type="button" data-f="consult" aria-pressed="false">Consultation</button>
+        <button class="chip" type="button" data-f="homme" aria-pressed="false">Homme et barbier</button>
+        <button class="chip" type="button" data-f="femme" aria-pressed="false">Femme</button>
+        <button class="chip" type="button" data-f="technique" aria-pressed="false">Permanente et lissage</button>
+        <button class="chip" type="button" data-f="soins" aria-pressed="false">Soins</button>
+        <button class="chip" type="button" data-f="keune" aria-pressed="false">Soins Keune</button>
+        <button class="chip" type="button" data-f="makeup" aria-pressed="false">Maquillage</button>
+        <button class="chip" type="button" data-f="fete" aria-pressed="false">Anniversaires et ateliers</button>
+      </div>
+
+      <div class="paper">
+        <div class="pgroup" data-cat="consult">
+          <h2>Consultation</h2>
+          <ul class="plist">
+            <li><div class="row"><span>Consultation technique</span><span class="dots"></span><span class="p">dès 20 €</span></div>
+              <p class="d"><span>30 min</span>Vingt minutes qui vous sont dédiées pour parler conseils, devis, routine capillaire, balayage ou couleur. Possibilité d'un cours d'auto-coiffage sur cheveux propres.</p></li>
+          </ul>
+        </div>
+
+        <div class="pgroup" data-cat="homme">
+          <h2>Homme et barbier</h2>
+          <ul class="plist">
+            <li><div class="row"><span>Coupe homme</span><span class="dots"></span><span class="p">29 €</span></div><p class="d"><span>30 min</span></p></li>
+            <li><div class="row"><span>Coupe étudiant et enfant garçon</span><span class="dots"></span><span class="p">25 €</span></div><p class="d"><span>30 min</span></p></li>
+            <li><div class="row"><span>Coupe et rasage à l'ancienne</span><span class="dots"></span><span class="p">69 €</span></div>
+              <p class="d"><span>1 h</span>Tracés de barbe selon un protocole italien : coupe-chou, blaireau, savon ou crème, préparation à l'eau chaude, serviette chaude, huile de pré-rasage et baume après-rasage.</p></li>
+            <li><div class="row"><span>Coupe, taille de barbe (tondeuse) et soin de barbe</span><span class="dots"></span><span class="p">53 €</span></div><p class="d"><span>45 min</span></p></li>
+            <li><div class="row"><span>Coupe, taille de barbe et tracé au gel de rasage</span><span class="dots"></span><span class="p">61 €</span></div><p class="d"><span>45 min</span></p></li>
+            <li><div class="row"><span>Rasage de crâne</span><span class="dots"></span><span class="p">21 €</span></div><p class="d"><span>15 min</span></p></li>
+          </ul>
+        </div>
+
+        <div class="pgroup" data-cat="femme">
+          <h2>Femme</h2>
+          <p class="gi">Un supplément peut s'appliquer si le démêlage demande plus de temps, et un soin peut être ajouté pour préserver le cheveu.</p>
+          <ul class="plist">
+            <li><div class="row"><span>Coupe courte et séchage (sous les oreilles)</span><span class="dots"></span><span class="p">41 €</span></div><p class="d"><span>30 min</span></p></li>
+            <li><div class="row"><span>Shampoing, coupe et brushing, cheveux mi-longs</span><span class="dots"></span><span class="p">48 €</span></div><p class="d"><span>30 min</span>Cheveux sur les épaules.</p></li>
+            <li><div class="row"><span>Coupe et brushing, cheveux longs</span><span class="dots"></span><span class="p">55 €</span></div><p class="d"><span>50 min</span>Cheveux sous les épaules.</p></li>
+            <li><div class="row"><span>Couleur, coupe et brushing</span><span class="dots"></span><span class="p">76 à 108 €</span></div>
+              <p class="d"><span>1 h 30</span>Le prix dépend de l'épaisseur et de la longueur : 76 € cheveux courts, 86 € mi-longs, 108 € longs.</p></li>
+            <li><div class="row"><span>Coupe courte et séchage, avec JB</span><span class="dots"></span><span class="p">45 €</span></div>
+              <p class="d"><span>30 min</span>Coupe sur cheveux courts uniquement, sans brushing, un séchage naturel suffit.</p></li>
+          </ul>
+        </div>
+
+        <div class="pgroup" data-cat="technique">
+          <h2>Permanente et lissage</h2>
+          <p class="gi">Réduction étudiante possible, à signaler.</p>
+          <ul class="plist">
+            <li><div class="row"><span>Permanente, shampoing, coupe et brushing, cheveux courts</span><span class="dots"></span><span class="p">90 €</span></div><p class="d"><span>1 h 30</span></p></li>
+            <li><div class="row"><span>Permanente, shampoing, coupe et brushing, mi-longs</span><span class="dots"></span><span class="p">119 €</span></div><p class="d"><span>2 h</span></p></li>
+            <li><div class="row"><span>Permanente, shampoing, coupe et brushing, longs</span><span class="dots"></span><span class="p">164 €</span></div><p class="d"><span>2 h 30</span></p></li>
+            <li><div class="row"><span>Lissage brésilien Ybera Discovery, cheveux courts</span><span class="dots"></span><span class="p">233 €</span></div>
+              <p class="d"><span>2 h 30</span>Lissage sans formol, aux actifs naturels à base de cellules souches de pomme suisse, qui restructure aussi le cheveu.</p></li>
+            <li><div class="row"><span>Lissage Ybera Discovery, mi-longs</span><span class="dots"></span><span class="p">303 €</span></div><p class="d"><span>3 h</span></p></li>
+            <li><div class="row"><span>Lissage Ybera Discovery, longs</span><span class="dots"></span><span class="p">372 €</span></div><p class="d"><span>3 h</span></p></li>
+            <li><div class="row"><span>Lissage Ybera Discovery, très longs</span><span class="dots"></span><span class="p">404 €</span></div><p class="d"><span>3 h</span></p></li>
+          </ul>
+        </div>
+
+        <div class="pgroup" data-cat="soins">
+          <h2>Soins</h2>
+          <p class="gi">Soins au bac, soins reconstructeurs et forfaits, brushing compris pour les forfaits.</p>
+          <ul class="plist">
+            <li><div class="row"><span>Après-shampooing</span><span class="dots"></span><span class="p">6 €</span></div><p class="d"><span>10 min</span></p></li>
+            <li><div class="row"><span>Masque profond</span><span class="dots"></span><span class="p">14 €</span></div><p class="d"><span>10 min</span></p></li>
+            <li><div class="row"><span>Soin Davines Tailoring</span><span class="dots"></span><span class="p">18 €</span></div>
+              <p class="d"><span>5 min</span>Un soin sur mesure à base d'infusions de plantes, avec 24 combinaisons possibles, sans temps de pose.</p></li>
+            <li><div class="row"><span>Soin à la kératine</span><span class="dots"></span><span class="p">30 €</span></div><p class="d"><span>30 min</span>Réparation et nutrition, effet cosmétique immédiat et durable.</p></li>
+            <li><div class="row"><span>Soin réparateur Genoma, cheveux courts</span><span class="dots"></span><span class="p">91 €</span></div>
+              <p class="d"><span>2 h</span>Reconstruit la fibre capillaire et se recommande avant toute technique. Effet de 2 à 3 mois.</p></li>
+            <li><div class="row"><span>Soin Genoma, mi-longs</span><span class="dots"></span><span class="p">117 €</span></div><p class="d"><span>2 h 30</span></p></li>
+            <li><div class="row"><span>Soin Genoma, longs</span><span class="dots"></span><span class="p">137 €</span></div><p class="d"><span>2 h 30</span></p></li>
+            <li><div class="row"><span>Soin Genoma, très longs</span><span class="dots"></span><span class="p">161 €</span></div><p class="d"><span>2 h 45</span></p></li>
+            <li><div class="row"><span>Bot capillaire Ybera profond, cheveux courts</span><span class="dots"></span><span class="p">132 €</span></div>
+              <p class="d"><span>2 h 40</span>Un soin reconstructeur qui répare le cheveu jusqu'au cortex pour 3 à 5 mois avec la gamme d'entretien, et facilite le coiffage.</p></li>
+            <li><div class="row"><span>Bot capillaire Ybera profond, mi-longs</span><span class="dots"></span><span class="p">159 €</span></div><p class="d"><span>2 h 40</span></p></li>
+            <li><div class="row"><span>Bot capillaire Ybera profond, longs</span><span class="dots"></span><span class="p">209 €</span></div><p class="d"><span>2 h 55</span></p></li>
+            <li><div class="row"><span>Bot capillaire Ybera profond, très longs</span><span class="dots"></span><span class="p">239 €</span></div><p class="d"><span>2 h 50</span></p></li>
+            <li><div class="row"><span>Bot capillaire Ybera express, cheveux courts</span><span class="dots"></span><span class="p">81 €</span></div><p class="d"><span>1 h 30</span>D'autres formules express existent, à demander au salon.</p></li>
+          </ul>
+        </div>
+
+        <div class="pgroup" data-cat="keune">
+          <h2>Soins Keune</h2>
+          <p class="gi">La gamme professionnelle Keune, choisie pour révéler la beauté naturelle de la chevelure.</p>
+          <ul class="plist">
+            <li><div class="row"><span>Color Brilliance</span><span class="dots"></span><span class="p">39 €</span></div><p class="d">Soin d'entretien pour la coloration : éclat, brillance et résultat durable.</p></li>
+            <li><div class="row"><span>Nutrition Absolue</span><span class="dots"></span><span class="p">29 €</span></div><p class="d">Soin profond qui nourrit et hydrate, pour retrouver souplesse, douceur et vitalité.</p></li>
+            <li><div class="row"><span>Reconstruction Profonde</span><span class="dots"></span><span class="p">49 €</span></div><p class="d">Traitement réparateur intensif pour cheveux abîmés, qui restaure la fibre capillaire.</p></li>
+            <li><div class="row"><span>Rituel Boucles Définies</span><span class="dots"></span><span class="p">42 €</span></div><p class="d">Soin profond pour la définition et la mise en forme des cheveux bouclés.</p></li>
+            <li><div class="row"><span>Blond Éclat Pur</span><span class="dots"></span><span class="p">35 €</span></div><p class="d">Soin profond spécial blonds, pour raviver l'éclat et neutraliser les reflets indésirables.</p></li>
+          </ul>
+        </div>
+
+        <div class="pgroup" data-cat="makeup">
+          <h2>Maquillage</h2>
+          <p class="gi">Aucune réduction étudiante sur le maquillage.</p>
+          <ul class="plist">
+            <li><div class="row"><span>Maquillage express</span><span class="dots"></span><span class="p">20 €</span></div>
+              <p class="d"><span>15 min</span>Bronzer, blush, highlighter, lèvres, fond de teint, anticernes et poudre, pour un rendez-vous ou une sortie de dernière minute.</p></li>
+            <li><div class="row"><span>Maquillage enfant</span><span class="dots"></span><span class="p">15 €</span></div><p class="d"><span>10 min</span>Blush, lèvres, paillettes et mascara, doux et léger.</p></li>
+            <li><div class="row"><span>Retouche maquillage</span><span class="dots"></span><span class="p">10 €</span></div><p class="d"><span>10 min</span>Bronzer, blush, highlighter et lèvres.</p></li>
+            <li><div class="row"><span>Maquillage complet</span><span class="dots"></span><span class="p">30 à 40 €</span></div><p class="d"><span>45 min</span>Sourcils, teint, anticernes, bronzer, blush, highlighter, mascara, lèvres et spray fixateur.</p></li>
+          </ul>
+        </div>
+
+        <div class="pgroup" data-cat="fete">
+          <h2>Anniversaires et ateliers</h2>
+          <p class="gi">Ces formules ne se réservent pas en ligne : appelez ou écrivez au salon. Prix pour 4, 6, 8 ou 10 personnes.</p>
+          <ul class="plist">
+            <li><div class="row"><span>Anniversaire, formule 1</span><span class="dots"></span><span class="p">120 à 300 €</span></div>
+              <p class="d"><span>2 h</span>Maquillage, coiffure, vernis et photos. 4 pers. 120 €, 6 pers. 180 €, 8 pers. 240 €, 10 pers. 300 €.</p></li>
+            <li><div class="row"><span>Anniversaire, formule 2</span><span class="dots"></span><span class="p">140 à 350 €</span></div>
+              <p class="d"><span>2 h 15</span>Formule 1 avec shooting photo et accessoires, plus un cadeau par personne. 4 pers. 140 €, 6 pers. 210 €, 8 pers. 280 €, 10 pers. 350 €.</p></li>
+            <li><div class="row"><span>Anniversaire, formule 3</span><span class="dots"></span><span class="p">155 à 375 €</span></div>
+              <p class="d"><span>2 h 45</span>Formule 2 avec goûter. 4 pers. 155 €, 6 pers. 225 €, 8 pers. 300 €, 10 pers. 375 €.</p></li>
+            <li><div class="row"><span>Anniversaire, formule 4</span><span class="dots"></span><span class="p">175 à 395 €</span></div>
+              <p class="d"><span>3 h</span>Formule 3 avec décoration, et un cadeau par enfant. 4 pers. 175 €, 6 pers. 245 €, 8 pers. 320 €, 10 pers. 395 €.</p></li>
+            <li><div class="row"><span>Atelier mère et fille</span><span class="dots"></span><span class="p">30 € le duo</span></div>
+              <p class="d"><span>2 h</span>15 € par personne, le dimanche seulement. On apprend ensemble plusieurs coiffures faciles à refaire à la maison. Renseignements par téléphone ou message sur les réseaux.</p></li>
+          </ul>
+        </div>
+      </div>
+
+      <p style="margin-top:2rem">
+        <a class="btn" href="https://www.planity.com/so-coif-willems-59780" target="_blank" rel="noopener">Réserver sur Planity</a>
+        <a class="btn ghost" href="#/contact">Une question ? Écrivez-nous</a>
+      </p>
+      <p class="fine">Tarifs relevés sur la page Planity du salon et sur son site. Ils peuvent évoluer : le salon reste la référence.</p>
+    </div>
+  </div>
+
+  <!-- ============ ÉQUIPE ============ -->
+  <div class="page" id="page-equipe" data-route="equipe">
+    <div class="doc">
+      <h1>L'équipe</h1>
+      <p class="intro">Une équipe soudée, formée aux techniques Keune, qui allie savoir-faire et bienveillance.</p>
+      <ul class="teamlist">
+        <li><div class="mono" aria-hidden="true">JB</div>
+          <div><h3>Jean-Benoît Duforest</h3><p class="role">Gérant</p>
+          <p>Il pilote le développement et la stratégie du salon avec passion. C'est JB que l'on retrouve aussi aux ciseaux, par exemple pour les coupes courtes femme.</p></div></li>
+        <li><div class="mono" aria-hidden="true">L</div>
+          <div><h3>Lorena Winne</h3><p class="role">Responsable du salon et coiffeuse</p>
+          <p>Passionnée de technique et de colorimétrie, spécialiste des techniques Keune. Elle accompagne chaque cliente vers sa meilleure version.</p></div></li>
+        <li><div class="mono" aria-hidden="true">I</div>
+          <div><h3>Illan</h3><p class="role">Apprenti coiffeur et barbier</p>
+          <p>Passionné par toutes les coupes modernes, il apporte son œil de barbier et son sens du détail.</p></div></li>
+        <li><div class="mono" aria-hidden="true">N</div>
+          <div><h3>Nathan</h3><p class="role">Apprenti coiffeur homme</p>
+          <p>Créatif, plein d'idées neuves et fraîches pour les coupes masculines.</p></div></li>
+        <li><div class="mono" aria-hidden="true">S</div>
+          <div><h3>Serena</h3><p class="role">Apprentie coiffeuse</p>
+          <p>Talentueuse et passionnée par toutes les techniques de mèches et de coloration.</p></div></li>
+        <li><div class="mono" aria-hidden="true">C</div>
+          <div><h3>Camille</h3><p class="role">Apprentie</p>
+          <p>Enthousiaste, elle s'est spécialisée dans les soins capillaires.</p></div></li>
+      </ul>
+      <section>
+        <h2>Ce qui les réunit</h2>
+        <div class="cols">
+          <div><h3>Expertise Keune</h3><p>Formées et certifiées aux produits et aux techniques Keune.</p></div>
+          <div><h3>Écoute personnalisée</h3><p>Chaque consultation est unique et adaptée à vos besoins.</p></div>
+        </div>
+        <p style="margin-top:1.5rem"><a class="more" href="#/avis">Voir ce qu'en disent les clients</a></p>
+      </section>
+    </div>
+  </div>
+
+  <!-- ============ GALERIE ============ -->
+  <div class="page" id="page-galerie" data-route="galerie">
+    <div class="doc">
+      <h1>Galerie</h1>
+      <p class="intro">Des réalisations qui parlent d'elles-mêmes : chaque coupe, chaque couleur, une signature.</p>
+      <div class="frames">
+        <figure class="frame"><strong>Le salon</strong><span>Photo de l'intérieur à placer ici</span></figure>
+        <figure class="frame"><strong>L'équipe au travail</strong><span>Photo à placer ici</span></figure>
+        <figure class="frame"><strong>Coupes hommes</strong><span>Réalisations à placer ici</span></figure>
+        <figure class="frame"><strong>Rasage à l'ancienne</strong><span>Réalisations à placer ici</span></figure>
+        <figure class="frame"><strong>Couleurs et mèches</strong><span>Réalisations à placer ici</span></figure>
+        <figure class="frame"><strong>Coiffures de fête</strong><span>Réalisations à placer ici</span></figure>
+      </div>
+      <p class="fine">Cette maquette ne peut pas héberger les photos du salon. Les cadres sont prêts : il suffit d'y placer les vraies images.</p>
+    </div>
+  </div>
+
+  <!-- ============ AVIS ============ -->
+  <div class="page" id="page-avis" data-route="avis">
+    <div class="doc">
+      <h1>Avis clients</h1>
+      <p class="intro">Le salon est noté 5,0 sur Planity, et répond personnellement à chaque avis.</p>
+
+      <div class="score">
+        <strong>5,0</strong>
+        <div><div class="stars" role="img" aria-label="5 étoiles sur 5">★★★★★</div><div>sur 1 092 avis vérifiés Planity</div></div>
+      </div>
+      <dl class="subs">
+        <div><dt>Accueil</dt><dd>5,0</dd></div>
+        <div><dt>Propreté</dt><dd>5,0</dd></div>
+        <div><dt>Cadre et ambiance</dt><dd>5,0</dd></div>
+        <div><dt>Qualité de la prestation</dt><dd>5,0</dd></div>
+      </dl>
+
+      <section>
+        <h2>Ailleurs sur le web</h2>
+        <div class="cols">
+          <div><h3>Google</h3><p>4,9 sur 5, sur plus de 120 avis d'après les annuaires. Chiffre à rafraîchir depuis la fiche officielle.</p></div>
+          <div><h3>Facebook</h3><p>94 % de recommandations sur 14 avis, et une page suivie par plus de 700 personnes.</p></div>
+        </div>
+      </section>
+
+      <section>
+        <h2>Ce que racontent les clients</h2>
+        <p>Résumé de quelques avis récents laissés sur Planity.</p>
+        <ul class="voices">
+          <li><p>Un habitué salue une belle prestation « comme d'habitude », et félicite les jeunes de l'équipe pour leur investissement.</p><small>Avis Planity, septembre 2026</small></li>
+          <li><p>Un client du rasage à l'ancienne y voit l'endroit où il faut aller. Il remarque les produits américains et italiens, et la simplicité et la gentillesse rare du coiffeur.</p><small>Avis Planity, septembre 2026</small></li>
+          <li><p>Une cliente arrivée en détresse capillaire a trouvé chez Lorena des réponses et une solution, appréciant sa technique, son temps et ses conseils. Elle a ensuite été coiffée par Serena, décrite comme adorable.</p><small>Avis Planity, septembre 2026</small></li>
+        </ul>
+        <p style="margin-top:1.5rem"><a class="btn" href="https://www.planity.com/so-coif-willems-59780" target="_blank" rel="noopener">Laisser un avis sur Planity</a></p>
+      </section>
+    </div>
+  </div>
+
+  <!-- ============ CONTACT ============ -->
+  <div class="page" id="page-contact" data-route="contact">
+    <div class="doc">
+      <h1>Contact et horaires</h1>
+      <p class="intro">Pour un rendez-vous immédiat, réservez en ligne. Pour une question, écrivez-nous ou appelez.</p>
+
+      <div class="contact-grid">
+        <div>
+          <h2>Nous trouver</h2>
+          <address class="coords">
+            <div><strong>Adresse</strong>27 rue Jean-Baptiste Lebas<br>59780 Willems<br><a href="https://www.google.com/maps/search/27+rue+Jean-Baptiste+Lebas+59780+Willems" target="_blank" rel="noopener">Ouvrir dans Google Maps</a></div>
+            <div><strong>Téléphone</strong><a href="tel:+33320346716">03 20 34 67 16</a></div>
+            <div><strong>E-mail</strong><a href="mailto:socoif@gmail.com">socoif@gmail.com</a></div>
+            <div><strong>Réservation en ligne</strong><a href="https://www.planity.com/so-coif-willems-59780" target="_blank" rel="noopener">Réserver sur Planity</a>, 24 h sur 24, confirmation immédiate</div>
+            <div><strong>Réseaux</strong><a href="https://www.facebook.com/p/Socoif-100054956426354/" target="_blank" rel="noopener">Facebook</a></div>
+          </address>
+          <h2 style="margin-top:2rem">Horaires</h2>
+          <dl class="hours">
+            <div><dt>Lundi</dt><dd>Fermé</dd></div>
+            <div><dt>Mardi au vendredi</dt><dd>9h30 à 19h</dd></div>
+            <div><dt>Samedi</dt><dd>9h à 18h</dd></div>
+            <div><dt>Dimanche</dt><dd>Fermé</dd></div>
+          </dl>
+        </div>
+
+        <div>
+          <h2>Envoyez-nous un message</h2>
+          <form class="msg" id="msgForm">
+            <div class="two">
+              <label>Prénom<input name="prenom" autocomplete="given-name" required></label>
+              <label>Nom<input name="nom" autocomplete="family-name" required></label>
+            </div>
+            <label>E-mail<input type="email" name="email" autocomplete="email" required></label>
+            <label>Téléphone<input type="tel" name="tel" autocomplete="tel"></label>
+            <label>Prestation souhaitée
+              <select name="presta">
+                <option value="">Choisir…</option>
+                <option>Coupe homme</option>
+                <option>Rasage à l'ancienne</option>
+                <option>Coupe femme</option>
+                <option>Couleur ou mèches</option>
+                <option>Color Brilliance, 39 €</option>
+                <option>Nutrition Absolue, 29 €</option>
+                <option>Reconstruction Profonde, 49 €</option>
+                <option>Rituel Boucles Définies, 42 €</option>
+                <option>Blond Éclat Pur, 35 €</option>
+                <option>Permanente ou lissage</option>
+                <option>Maquillage</option>
+                <option>Anniversaire ou atelier</option>
+                <option>Autre ou question</option>
+              </select>
+            </label>
+            <label>Message<textarea name="message" required></textarea></label>
+            <div><button class="btn" type="submit">Envoyer le message</button></div>
+            <p class="okmsg" id="okmsg" hidden>Votre application de messagerie va s'ouvrir avec le message prêt à envoyer. Pour un rendez-vous immédiat, utilisez Planity.</p>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ MENTIONS LÉGALES ============ -->
+  <div class="page" id="page-mentions" data-route="mentions">
+    <div class="doc legal">
+      <h1>Mentions légales</h1>
+      <p class="intro">Informations sur cette maquette et sur le salon.</p>
+      <section>
+        <h2>Cette maquette</h2>
+        <p>Cette page est une maquette de démonstration non officielle, réalisée à partir des informations publiques du salon (site socoif.com, page Planity, annuaires). Elle n'a pas été validée par So Coif'.</p>
+      </section>
+      <section>
+        <h2>Le salon</h2>
+        <ul>
+          <li>Enseigne : So Coif'</li>
+          <li>Adresse : 27 rue Jean-Baptiste Lebas, 59780 Willems</li>
+          <li>Téléphone : 03 20 34 67 16</li>
+          <li>E-mail : socoif@gmail.com</li>
+          <li>Activité : coiffure (code NAF 9602A), société à responsabilité limitée créée en 2007</li>
+          <li>SIREN 494 732 860, SIRET 494 732 860 00015</li>
+        </ul>
+        <p>Ces informations proviennent d'annuaires publics d'entreprises et doivent être confirmées par le salon avant toute mise en ligne officielle.</p>
+      </section>
+      <section>
+        <h2>Données personnelles</h2>
+        <p>Ce site n'utilise aucun cookie de suivi et ne stocke aucune donnée. Le formulaire de contact ne transmet rien lui-même : il prépare un e-mail dans votre application de messagerie, que vous choisissez d'envoyer ou non. La réservation se fait sur Planity, soumise à ses propres conditions.</p>
+      </section>
+    </div>
+  </div>
+
+</main>
+
+<footer class="foot">
+  <div>
+    <a class="brand" href="#/">So Coif'</a>
+    <p>Coiffeur et barbier à Willems, depuis 2007.</p>
+    <p>Maquette non officielle.</p>
+  </div>
+  <div>
+    <h3>Le salon</h3>
+    <ul>
+      <li><a href="#/salon">Notre histoire</a></li>
+      <li><a href="#/prestations">Prestations et tarifs</a></li>
+      <li><a href="#/equipe">L'équipe</a></li>
+      <li><a href="#/galerie">Galerie</a></li>
+      <li><a href="#/avis">Avis clients</a></li>
+    </ul>
+  </div>
+  <div>
+    <h3>Nous trouver</h3>
+    <p>27 rue Jean-Baptiste Lebas<br>59780 Willems</p>
+    <p><a href="tel:+33320346716">03 20 34 67 16</a><br><a href="mailto:socoif@gmail.com">socoif@gmail.com</a></p>
+    <ul>
+      <li><a href="#/contact">Contact et horaires</a></li>
+      <li><a href="#/mentions">Mentions légales</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var root = document.documentElement;
+  var canvas = document.getElementById('gl');
+  var sections = Array.prototype.slice.call(document.querySelectorAll('#page-home .scene'));
+  var steps = Array.prototype.slice.call(document.querySelectorAll('.steps li'));
+
+  function clamp(x, a, b) { a = a === undefined ? 0 : a; b = b === undefined ? 1 : b; return Math.min(b, Math.max(a, x)); }
+  function smooth(x) { x = clamp(x); return x * x * (3 - 2 * x); }
+  function lerp(a, b, k) { return a + (b - a) * k; }
+
+  /* ---------- Navigation entre les pages (hash) ---------- */
+  var TITLES = {
+    home: "So Coif', coiffeur et barbier à Willems",
+    salon: "Le salon | So Coif' Willems",
+    prestations: "Prestations et tarifs | So Coif' Willems",
+    equipe: "L'équipe | So Coif' Willems",
+    galerie: "Galerie | So Coif' Willems",
+    avis: "Avis clients | So Coif' Willems",
+    contact: "Contact et horaires | So Coif' Willems",
+    mentions: "Mentions légales | So Coif' Willems"
+  };
+  var pages = Array.prototype.slice.call(document.querySelectorAll('.page'));
+  var navEl = document.getElementById('nav');
+  var toggle = document.getElementById('menuToggle');
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('#navLinks a[data-r]'));
+  var isHome = true;
+
+  function currentRoute() {
+    var h = (location.hash || '').replace(/^#\/?/, '');
+    return TITLES[h] ? h : 'home';
+  }
+  function showRoute() {
+    var r = currentRoute();
+    isHome = (r === 'home');
+    pages.forEach(function (p) { p.classList.toggle('active', p.getAttribute('data-route') === r); });
+    root.classList.toggle('is-home', isHome);
+    navLinks.forEach(function (a) {
+      if (a.getAttribute('data-r') === r) { a.setAttribute('aria-current', 'page'); } else { a.removeAttribute('aria-current'); }
+    });
+    document.title = TITLES[r];
+    root.style.scrollBehavior = 'auto';
+    window.scrollTo(0, 0);
+    root.style.scrollBehavior = '';
+    navEl.classList.remove('open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+  toggle.addEventListener('click', function () {
+    var open = navEl.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  window.addEventListener('hashchange', showRoute);
+
+  /* Filtres de la carte */
+  var chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
+  var groups = Array.prototype.slice.call(document.querySelectorAll('.pgroup'));
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      var f = chip.getAttribute('data-f');
+      chips.forEach(function (c) { c.setAttribute('aria-pressed', c === chip ? 'true' : 'false'); });
+      groups.forEach(function (g) { g.hidden = !(f === 'all' || g.getAttribute('data-cat') === f); });
+    });
+  });
+
+  /* Formulaire : prépare un e-mail dans la messagerie de la personne */
+  var form = document.getElementById('msgForm');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var d = new FormData(form);
+    var subject = 'Demande via le site' + (d.get('presta') ? ' : ' + d.get('presta') : '');
+    var body = 'Prénom : ' + d.get('prenom') + '\nNom : ' + d.get('nom') + '\nE-mail : ' + d.get('email') +
+      '\nTéléphone : ' + (d.get('tel') || '') + '\nPrestation : ' + (d.get('presta') || '') + '\n\n' + d.get('message');
+    var a = document.createElement('a');
+    a.href = 'mailto:socoif@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    document.getElementById('okmsg').hidden = false;
+  });
+
+  /* ---------- Scène 3D (accueil) ---------- */
+  var hasGL = false, renderer, scene, camera, pole, razor, bladePivot, keyLight, layoutPortrait = false;
+
+  try {
+    if (!window.THREE) { throw new Error('three indisponible'); }
+    renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(32, 1, 0.1, 50);
+    camera.position.set(0, 0, 9);
+    hasGL = true;
+  } catch (e) {
+    root.classList.add('no-gl');
+  }
+
+  function stripeCanvas() {
+    var c = document.createElement('canvas');
+    c.width = 256; c.height = 256;
+    var g = c.getContext('2d');
+    var cols = ['#b3261e', '#efe6d2', '#1f3a6b', '#efe6d2'];
+    var band = 32, shift = 640;
+    for (var i = -24; i < 10; i++) {
+      var y0 = i * band;
+      g.fillStyle = cols[((i % 4) + 4) % 4];
+      g.beginPath();
+      g.moveTo(0, y0);
+      g.lineTo(256, y0 + shift);
+      g.lineTo(256, y0 + shift + band + 1);
+      g.lineTo(0, y0 + band + 1);
+      g.closePath();
+      g.fill();
+    }
+    return c;
+  }
+
+  if (hasGL) {
+    var brass = new THREE.MeshPhongMaterial({ color: 0xb98a3c, specular: 0xffe2a0, shininess: 90 });
+    var steel = new THREE.MeshPhongMaterial({ color: 0xc9ced2, specular: 0xffffff, shininess: 140 });
+    var wood = new THREE.MeshPhongMaterial({ color: 0x3a2216, specular: 0x1a0f08, shininess: 14 });
+
+    var tex = new THREE.CanvasTexture(stripeCanvas());
+    tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+    tex.repeat.set(1, 2.5);
+    tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+    pole = new THREE.Group();
+    var body = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.55, 0.55, 3.2, 64, 1, true),
+      new THREE.MeshPhongMaterial({ map: tex, shininess: 60, specular: 0x332211, side: THREE.DoubleSide })
+    );
+    var glass = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.585, 0.585, 3.2, 64, 1, true),
+      new THREE.MeshPhongMaterial({ color: 0xffffff, transparent: true, opacity: 0.1, shininess: 220, specular: 0xffffff, depthWrite: false })
+    );
+    pole.add(body, glass);
+
+    [1, -1].forEach(function (s) {
+      var disc = new THREE.Mesh(new THREE.CylinderGeometry(0.66, 0.66, 0.3, 48), brass);
+      disc.position.y = 1.75 * s;
+      var ring = new THREE.Mesh(new THREE.TorusGeometry(0.62, 0.045, 12, 48), brass);
+      ring.rotation.x = Math.PI / 2;
+      ring.position.y = 1.58 * s;
+      var dome = new THREE.Mesh(new THREE.SphereGeometry(0.5, 40, 20, 0, Math.PI * 2, 0, Math.PI / 2), brass);
+      dome.position.y = 1.9 * s;
+      if (s < 0) { dome.rotation.x = Math.PI; }
+      var knob = new THREE.Mesh(new THREE.SphereGeometry(0.12, 20, 12), brass);
+      knob.position.y = 2.42 * s;
+      pole.add(disc, ring, dome, knob);
+    });
+    scene.add(pole);
+
+    razor = new THREE.Group();
+    var handle = new THREE.Group();
+    [-0.05, 0.05].forEach(function (z) {
+      var sc = new THREE.Mesh(new THREE.BoxGeometry(1.75, 0.26, 0.05), wood);
+      sc.position.set(-0.9, 0, z);
+      handle.add(sc);
+    });
+    var bolster = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.3, 0.16), brass);
+    bolster.position.set(-0.05, 0, 0);
+    var tail = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.28, 0.16), brass);
+    tail.position.set(-1.8, 0, 0);
+    var pin = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.055, 0.22, 20), brass);
+    pin.rotation.x = Math.PI / 2;
+    handle.add(bolster, tail, pin);
+
+    var bs = new THREE.Shape();
+    bs.moveTo(0, -0.12);
+    bs.lineTo(1.5, -0.12);
+    bs.quadraticCurveTo(1.86, -0.12, 1.84, 0.08);
+    bs.lineTo(1.78, 0.11);
+    bs.lineTo(0, 0.11);
+    bs.lineTo(0, -0.12);
+    var bg = new THREE.ExtrudeGeometry(bs, { depth: 0.028, bevelEnabled: false });
+    bg.translate(0, 0, -0.014);
+    bladePivot = new THREE.Group();
+    bladePivot.add(new THREE.Mesh(bg, steel));
+    bladePivot.rotation.z = Math.PI;
+
+    razor.add(handle, bladePivot);
+    razor.visible = false;
+    scene.add(razor);
+
+    scene.add(new THREE.AmbientLight(0x8a6446, 0.85));
+    var sun = new THREE.DirectionalLight(0xffd9a8, 0.8);
+    sun.position.set(3, 4, 5);
+    scene.add(sun);
+    keyLight = new THREE.PointLight(0xffb463, 1.5, 28);
+    keyLight.position.set(2, 2, 5);
+    scene.add(keyLight);
+    var rim = new THREE.PointLight(0x4a6aa8, 0.7, 30);
+    rim.position.set(-5, -2, 3);
+    scene.add(rim);
+  }
+
+  function resize() {
+    var w = window.innerWidth, h = window.innerHeight;
+    layoutPortrait = (w / h) < 0.95;
+    if (hasGL) {
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  /* t vaut 0 en haut de la première scène de l'accueil et 6 en bas de la dernière ; le centre de la scène i est à i + 0.5 */
+  function scrollT() {
+    var c = window.innerHeight * 0.5;
+    for (var i = 0; i < sections.length; i++) {
+      var r = sections[i].getBoundingClientRect();
+      if (c < r.bottom || i === sections.length - 1) {
+        return i + clamp((c - r.top) / r.height, 0, 1);
+      }
+    }
+    return 0;
+  }
+
+  var px = 0, py = 0, tpx = 0, tpy = 0;
+  window.addEventListener('pointermove', function (e) {
+    if (e.pointerType === 'touch') { return; }
+    tpx = (e.clientX / window.innerWidth) * 2 - 1;
+    tpy = -((e.clientY / window.innerHeight) * 2 - 1);
+  }, { passive: true });
+
+  /* ---------- Son ---------- */
+  var actx = null, master = null, soundOn = false, wasOpen = false;
+  var sndBtn = document.getElementById('snd');
+
+  function buildAudio() {
+    var AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) { return false; }
+    actx = new AC();
+    master = actx.createGain();
+    master.gain.value = 0;
+    master.connect(actx.destination);
+    var rate = actx.sampleRate, len = rate * 4, i;
+
+    var room = actx.createBuffer(1, len, rate), rd = room.getChannelData(0), last = 0;
+    for (i = 0; i < len; i++) { last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02; rd[i] = last * 3.2; }
+    var roomSrc = actx.createBufferSource(); roomSrc.buffer = room; roomSrc.loop = true;
+    var lp = actx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 420;
+    var roomGain = actx.createGain(); roomGain.gain.value = 0.5;
+    roomSrc.connect(lp); lp.connect(roomGain); roomGain.connect(master);
+    roomSrc.start();
+
+    var crack = actx.createBuffer(1, len, rate), cd = crack.getChannelData(0);
+    for (i = 0; i < len; i++) { if (Math.random() < 0.0008) { cd[i] = (Math.random() * 2 - 1) * (0.35 + Math.random() * 0.65); } }
+    var crackSrc = actx.createBufferSource(); crackSrc.buffer = crack; crackSrc.loop = true;
+    var hp = actx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 1400;
+    var crackGain = actx.createGain(); crackGain.gain.value = 0.55;
+    crackSrc.connect(hp); hp.connect(crackGain); crackGain.connect(master);
+    crackSrc.start();
+    return true;
+  }
+
+  function snick() {
+    if (!soundOn || !actx) { return; }
+    var len = Math.floor(actx.sampleRate * 0.09);
+    var b = actx.createBuffer(1, len, actx.sampleRate), d = b.getChannelData(0);
+    for (var i = 0; i < len; i++) { d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3); }
+    var s = actx.createBufferSource(); s.buffer = b;
+    var bp = actx.createBiquadFilter(); bp.type = 'bandpass'; bp.frequency.value = 3600; bp.Q.value = 1.4;
+    var g = actx.createGain(); g.gain.value = 0.9;
+    s.connect(bp); bp.connect(g); g.connect(master);
+    s.start();
+  }
+
+  if (!(window.AudioContext || window.webkitAudioContext)) { sndBtn.style.display = 'none'; }
+  sndBtn.addEventListener('click', function () {
+    if (!actx && !buildAudio()) { return; }
+    soundOn = !soundOn;
+    if (actx.state === 'suspended') { actx.resume(); }
+    master.gain.cancelScheduledValues(actx.currentTime);
+    master.gain.linearRampToValueAtTime(soundOn ? 0.22 : 0, actx.currentTime + 0.4);
+    sndBtn.setAttribute('aria-pressed', soundOn ? 'true' : 'false');
+    sndBtn.textContent = soundOn ? 'Son activé' : 'Son coupé';
+  });
+  document.addEventListener('visibilitychange', function () {
+    if (!actx) { return; }
+    if (document.hidden) { actx.suspend(); } else if (soundOn) { actx.resume(); }
+  });
+
+  /* ---------- Curseur : point blanc, plus gros sur tout ce qui est cliquable ---------- */
+  var dotEl = document.getElementById('dot');
+  var finePointer = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (dotEl && finePointer) {
+    var dx = -100, dy = -100, cx = -100, cy = -100, dotActive = false;
+    var ACTIONABLE = 'a, button, [role="button"], input, select, textarea, label, summary';
+
+    var dotLoop = function () {
+      window.requestAnimationFrame(dotLoop);
+      var k = reduce ? 1 : 0.35;
+      cx += (dx - cx) * k;
+      cy += (dy - cy) * k;
+      dotEl.style.transform = 'translate3d(' + cx + 'px,' + cy + 'px,0)';
+    };
+
+    window.addEventListener('pointermove', function (e) {
+      if (e.pointerType === 'touch') { return; }
+      dx = e.clientX; dy = e.clientY;
+      var actionable = !!(e.target && e.target.closest && e.target.closest(ACTIONABLE));
+      dotEl.classList.toggle('big', actionable);
+      if (!dotActive) {
+        dotActive = true; cx = dx; cy = dy;
+        root.classList.add('has-dot');
+        dotEl.classList.add('on');
+        window.requestAnimationFrame(dotLoop);
+      }
+    }, { passive: true });
+    document.addEventListener('pointerdown', function (e) { if (e.pointerType !== 'touch') { dotEl.classList.add('down'); } });
+    document.addEventListener('pointerup', function () { dotEl.classList.remove('down'); });
+    document.documentElement.addEventListener('mouseleave', function () { dotEl.classList.remove('on'); });
+    document.documentElement.addEventListener('mouseenter', function () { if (dotActive) { dotEl.classList.add('on'); } });
+  }
+
+  /* ---------- Boucle (uniquement sur l'accueil) ---------- */
+  var tS = 0, last = performance.now(), elapsed = 0, started = false;
+
+  function frame(now) {
+    window.requestAnimationFrame(frame);
+    var dt = Math.min((now - last) / 1000, 0.05);
+    last = now;
+
+    if (!started) { started = true; window.requestAnimationFrame(function () { root.classList.add('ready'); }); }
+    if (!isHome) { return; }
+    elapsed += dt;
+
+    var t = scrollT();
+    tS = reduce ? t : tS + (t - tS) * (1 - Math.exp(-dt * 5));
+    px += (tpx - px) * (1 - Math.exp(-dt * 4));
+    py += (tpy - py) * (1 - Math.exp(-dt * 4));
+
+    var open = smooth((tS - 2.2) / 0.7);
+    for (var i = 0; i < steps.length; i++) {
+      steps[i].classList.toggle('on', open >= i * 0.25 + 0.05);
+    }
+    if (open > 0.5 && !wasOpen) { wasOpen = true; snick(); }
+    if (open < 0.4) { wasOpen = false; }
+
+    if (hasGL) {
+      var P = layoutPortrait;
+
+      var v1 = 1 - smooth((tS - 1.6) / 0.6);
+      var v2 = smooth((tS - 4.9) / 0.6);
+      var vp = Math.max(v1, v2);
+      var xRight = P ? 0 : 2.5, xLeft = P ? 0 : -2.6;
+      var x = tS < 3 ? lerp(xRight, xLeft, smooth((tS - 0.5) / 1.0)) : xRight;
+      pole.visible = vp > 0.01;
+      if (pole.visible) {
+        pole.scale.setScalar((P ? 0.55 : 0.78) * (0.6 + 0.4 * vp));
+        pole.position.set(x, (P ? 1.35 : -0.1) - (1 - vp) * 0.6, 0);
+        pole.rotation.y = (reduce ? 0 : elapsed * 0.8) + tS * 1.2 + px * 0.4;
+        pole.rotation.z = -0.05 + px * 0.03;
+      }
+
+      var vr = smooth((tS - 1.9) / 0.5) * (1 - smooth((tS - 3.1) / 0.5));
+      razor.visible = vr > 0.01;
+      if (razor.visible) {
+        razor.scale.setScalar((P ? 0.62 : 1.0) * (0.6 + 0.4 * vr));
+        razor.position.set(P ? 0 : 1.9, (P ? 1.5 : 0.1) - (1 - vr) * 0.5, 0);
+        razor.rotation.set(-0.35 + py * 0.15, -0.5 + (tS - 2.5) * 0.6 + px * 0.3, -0.12);
+        bladePivot.rotation.z = Math.PI * (1 - open);
+      }
+
+      keyLight.position.set(px * 4 + 1, py * 3 + 1.5, 4.5);
+      if (pole.visible || razor.visible) { renderer.render(scene, camera); }
+      else { renderer.clear(); }
+    }
+  }
+
+  showRoute();
+  window.requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>

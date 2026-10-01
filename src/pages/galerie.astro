@@ -1,0 +1,49 @@
+---
+import { Picture } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import alts from '../data/galerie-alt.json';
+
+// La galerie se remplit toute seule : il suffit de déposer des images dans src/assets/galerie
+// (jpg, png, webp, avif), classées par ordre alphabétique du nom de fichier.
+const modules = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/galerie/*.{jpg,jpeg,png,webp,avif,JPG,JPEG,PNG}',
+  { eager: true },
+);
+const photos = Object.entries(modules)
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([chemin, m]) => {
+    const fichier = chemin.split('/').pop() as string;
+    const parDefaut = fichier.replace(/\.[^.]+$/, '').replace(/^\d+[-_]?/, '').replace(/[-_]+/g, ' ').trim();
+    return { fichier, image: m.default, alt: (alts as Record<string, string>)[fichier] ?? (parDefaut ? parDefaut.charAt(0).toUpperCase() + parDefaut.slice(1) : 'Photo du salon So Coif') };
+  });
+---
+<Base
+  title="Galerie | So Coif' Willems"
+  description="Photos du salon So Coif' à Willems : le poste de barbier, l'espace shampoing, les coupes et le rasage à l'ancienne."
+>
+  <div class="doc">
+    <h1>Galerie</h1>
+    <p class="intro">Des réalisations qui parlent d'elles-mêmes : chaque coupe, chaque couleur, une signature.</p>
+    {photos.length === 0 ? (
+      <p class="gallery-empty">Les photos arrivent bientôt. Pour en ajouter, déposez-les dans le dossier <code>src/assets/galerie</code>.</p>
+    ) : (
+      <ul class="gallery">
+        {photos.map((p, i) => (
+          <li>
+            <figure>
+              <Picture
+                src={p.image}
+                alt={p.alt}
+                formats={['avif', 'webp']}
+                widths={[320, 480, 720]}
+                sizes="(min-width: 66rem) 21rem, (min-width: 36rem) 45vw, 92vw"
+                loading={i < 2 ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+            </figure>
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+</Base>

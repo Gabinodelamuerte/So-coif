@@ -1,0 +1,35 @@
+{
+  "nom": "So Coif'",
+  "slogan": "Coiffeur et barbier à Willems depuis 2007.",
+  "url": "https://www.socoif.com",
+  "adresse": {
+    "rue": "27 rue Jean-Baptiste Lebas",
+    "codePostal": "59780",
+    "ville": "Willems",
+    "region": "Nord",
+    "pays": "FR"
+  },
+  "telephone": "03 20 34 67 16",
+  "telephoneInternational": "+33320346716",
+  "email": "socoif@gmail.com",
+  "reservation": "https://www.planity.com/so-coif-willems-59780",
+  "facebook": "https://www.facebook.com/p/Socoif-100054956426354/",
+  "carte": "https://www.google.com/maps/search/27+rue+Jean-Baptiste+Lebas+59780+Willems",
+  "_horaires": "TODO à confirmer avec le salon : le site actuel dit 9h30 en semaine, Planity 9h, Facebook indique 8h30 le samedi. On garde 9h30 / 9h (maquette).",
+  "horaires": [
+    { "jours": "Lundi", "libelle": "Lundi", "ouvre": null, "ferme": null },
+    { "jours": "Mardi au vendredi", "libelle": "Mardi au vendredi", "ouvre": "09:30", "ferme": "19:00", "dayOfWeek": ["Tuesday", "Wednesday", "Thursday", "Friday"], "texte": "9h30 à 19h" },
+    { "jours": "Samedi", "libelle": "Samedi", "ouvre": "09:00", "ferme": "18:00", "dayOfWeek": ["Saturday"], "texte": "9h à 18h" },
+    { "jours": "Dimanche", "libelle": "Dimanche", "ouvre": null, "ferme": null }
+  ],
+  "legal": {
+    "_todo": "SIREN, SIRET et NAF viennent d'annuaires : à faire valider par le salon.",
+    "siren": "494 732 860",
+    "siret": "494 732 860 00015",
+    "naf": "9602A",
+    "forme": "société à responsabilité limitée créée en 2007",
+    "_todoHebergeur": "TODO : adapter si le site n'est pas hébergé chez Netlify.",
+    "hebergeur": "Netlify, Inc., 512 2nd Street, Suite 200, San Francisco, CA 94107, États-Unis",
+    "hebergeurGithub": "GitHub, Inc. (GitHub Pages), 88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis"
+  }
+}

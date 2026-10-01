@@ -1,84 +1,56 @@
-# So Coif' — Site web
+# So Coif' : site officiel (Willems)
 
-## Structure du projet
+Site statique multi-pages construit avec [Astro](https://astro.build). Maquette de référence : `docs/prototype-socoif.html`. Cahier des charges : `CLAUDE.md`.
 
-```
-socoif/
-├── index.html          ← Page principale du site
-├── css/
-│   └── style.css       ← Toute la mise en forme
-├── js/
-│   └── main.js         ← Interactions (menu, formulaire, animations)
-├── images/
-│   ├── barbier-portrait.jpg
-│   ├── barbier-dyson.png
-│   ├── coupe-precision.png
-│   ├── atelier-socoif.jpg
-│   └── salon-bac.jpg
-└── README.md           ← Ce fichier
-```
+> Ce site part d'une maquette non officielle : la mention reste affichée (pied de page et mentions légales) tant que le salon ne l'a pas validé. Les points à faire confirmer sont listés dans [`A-CONFIRMER.md`](A-CONFIRMER.md).
 
----
+## Commandes
 
-## Utiliser avec l'application "Local" (by WP Engine)
-
-Local est prévu pour WordPress. Pour utiliser ce site HTML statique avec Local, deux options :
-
-### Option A — Utiliser Local en mode "PHP simple" (recommandé)
-
-1. Ouvrir **Local**
-2. Créer un nouveau site → choisir **"Custom"** comme environnement
-3. Une fois le site créé, ouvrir le dossier du site :
-   - Clic droit sur le site → **"Open site folder"** (ou **"Reveal in Finder/Explorer"**)
-4. Aller dans `app/public/`
-5. **Supprimer** tous les fichiers WordPress présents
-6. **Copier** tous les fichiers du dossier `socoif/` dans `app/public/`
-7. Dans Local, cliquer sur **"Open site"** → le site s'affiche !
-
-### Option B — Serveur local simple (sans Local)
-
-Si tu veux juste prévisualiser le site sans WordPress :
-
-**Avec VS Code :**
-- Installer l'extension "Live Server"
-- Ouvrir le dossier `socoif/`
-- Clic droit sur `index.html` → "Open with Live Server"
-
-**Avec Python (terminal) :**
 ```bash
-cd socoif
-python3 -m http.server 8000
-# Ouvrir http://localhost:8000
+npm install        # une fois
+npm run dev        # site en local sur http://localhost:4321
+npm run build      # génère le site dans dist/
+npm run preview    # prévisualise le build
 ```
 
----
+Node 20 ou plus récent.
 
-## Personnaliser le site
+## Pages
 
-### Modifier les textes
-Ouvrir `index.html` dans n'importe quel éditeur de texte (VS Code, Notepad++, etc.)
+`/`, `/salon`, `/prestations`, `/equipe`, `/galerie`, `/avis`, `/contact`, `/mentions-legales` (+ `/merci` après envoi du formulaire, et une page 404). Une page = un fichier de `src/pages/`.
 
-### Modifier les couleurs
-Ouvrir `css/style.css` et changer les variables en haut du fichier :
-```css
-:root {
-  --gold: #C9A84C;     /* Couleur or */
-  --noir: #0A0A0A;     /* Fond noir */
-  --ivory: #F5F0E8;    /* Texte clair */
-}
-```
+## Modifier le contenu sans toucher au code
 
-### Remplacer les images
-Remplacer les fichiers dans le dossier `images/` en gardant les mêmes noms de fichiers.
+| Quoi | Où |
+| --- | --- |
+| Tarifs et prestations (catégories, filtres, carte de l'accueil) | `src/data/prestations.json` |
+| Coordonnées, horaires, mentions légales | `src/data/salon.json` (les horaires affichés sont aussi dans `index.astro` et `contact.astro`, voir `A-CONFIRMER.md`) |
+| Équipe | `src/data/equipe.json` |
+| Avis et notes | `src/data/avis.json` |
+| Photos de la galerie | déposer les images dans `src/assets/galerie/` |
+| Texte alternatif des photos | `src/data/galerie-alt.json` (facultatif, clé = nom du fichier) |
 
-### Modifier les tarifs / prestations
-Dans `index.html`, chercher la section `id="services"` et modifier les prix et descriptions.
+### Galerie
 
----
+Déposez des `.jpg`, `.png`, `.webp` ou `.avif` dans `src/assets/galerie/` : la galerie se remplit toute seule, par ordre alphabétique du nom de fichier (préfixez par `01-`, `02-`… pour choisir l'ordre). Les images sont converties automatiquement en AVIF et WebP, à plusieurs tailles, et chargées en différé. Pensez à décrire chaque photo dans `galerie-alt.json`.
 
-## Mise en ligne (hébergement)
+### Tarifs
 
-Pour publier le site sur internet, il suffit d'uploader tout le contenu du dossier `socoif/`
-sur n'importe quel hébergeur web (OVH, Infomaniak, o2switch, Hostinger…) via FTP.
+Dans `prestations.json`, chaque catégorie a un `id`, un `filtre` (libellé du bouton), un `titre`, une `intro` facultative et ses `prestations` (`nom`, `prix`, `duree`, `description`). Ajouter `"accueil": { "libelle": "…", "ordre": 9 }` à une prestation la fait apparaître sur la carte de la page d'accueil. Le champ `verifier` est une note interne, jamais affichée.
 
-Aucune base de données nécessaire — c'est un site HTML statique.
+## Accueil immersif
+
+- `src/scripts/accueil.js` : scroll, poteau et coupe-chou 3D, son (coupé par défaut). Chargé uniquement sur `/`.
+- Three.js est chargé à part (fichier séparé), après l'affichage de la page. Tant qu'il n'est pas prêt, ou sans WebGL, un poteau en CSS prend le relais.
+- `prefers-reduced-motion` est respecté (poteau sans rotation automatique, pas d'animation CSS).
+- Three.js est volontairement figé en `0.128.0`, la version de la maquette : les versions récentes changent le calcul des lumières et donc l'aspect de la scène.
+
+## Formulaire de contact
+
+Par défaut Netlify Forms (Formspree ou ouverture de la messagerie selon les variables de construction) : anti-spam par champ piège (honeypot) et filtre Netlify, confirmation sur `/merci`. Sans JavaScript, le formulaire fonctionne aussi. En local (`npm run dev`), l'envoi échoue et le message d'erreur s'affiche : c'est normal, il faut être hébergé sur Netlify. Détails et alternatives (Formspree) dans [`DEPLOIEMENT.md`](DEPLOIEMENT.md).
+
+## Mise en ligne
+
+GitHub Pages (workflow inclus) ou Netlify : détails dans `DEPLOIEMENT.md`. Variables de construction utiles : `SITE`, `BASE` (chemin de base), `PUBLIC_FORM_MODE=mailto`, `PUBLIC_FORM_ENDPOINT` (Formspree), `PUBLIC_HOST=github`.
+
+Voir [`DEPLOIEMENT.md`](DEPLOIEMENT.md).

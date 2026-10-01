@@ -1,0 +1,97 @@
+---
+import { u } from '../utils/url';
+import Base from '../layouts/Base.astro';
+import salon from '../data/salon.json';
+import prestations from '../data/prestations.json';
+import avis from '../data/avis.json';
+
+const carte = prestations.categories
+  .flatMap((c) => c.prestations)
+  .filter((p: any) => p.accueil)
+  .sort((a: any, b: any) => a.accueil.ordre - b.accueil.ordre) as any[];
+const horaires = [
+  { jours: 'Mardi au vendredi', texte: '9h30 à 19h' },
+  { jours: 'Samedi', texte: '9h à 18h' },
+  { jours: 'Dimanche et lundi', texte: 'Fermé' },
+]; // TODO horaires à confirmer avec le salon (voir salon.json)
+const equipe = (await import('../data/equipe.json')).default;
+---
+<Base
+  home
+  schema
+  title="So Coif', coiffeur et barbier à Willems"
+  description="So Coif', salon de coiffure et barbier à Willems depuis 2007 : coupe, couleur, soins, rasage à l'ancienne. Réservation en ligne."
+>
+  <section class="scene hero">
+    <div class="copy">
+      <h1>So Coif'</h1>
+      <p class="lead">Coiffeur et barbier à Willems depuis 2007. Coupe, couleur, soins, et le rasage au coupe-chou comme autrefois.</p>
+      <div>
+        <a class="btn" href={salon.reservation} target="_blank" rel="noopener">Réserver sur Planity</a>
+        <a class="btn ghost" href={u('/prestations')}>Voir les prestations</a>
+      </div>
+      <p class="hint">Faites défiler, la porte est ouverte.</p>
+    </div>
+  </section>
+
+  <section class="scene story" aria-labelledby="t-salon">
+    <div class="copy">
+      <h2 id="t-salon">Un salon humain, au cœur de Willems.</h2>
+      <p>Depuis 2007, So Coif' tient à une idée simple : que chacun reparte avec une coupe qui lui ressemble, et l'envie de revenir. Dix-neuf ans plus tard, six passionnés y travaillent, entre coiffeurs, coloristes et barbiers.</p>
+      <p>Chez JB, coiffer va au-delà des ciseaux et des mélanges de couleur. On travaille la matière, le volume et la lumière, pour les femmes comme pour les hommes, avec ou sans barbe. Chaque rendez-vous commence par un vrai échange sur vos envies.</p>
+      <p><a class="more" href={u('/salon')}>Découvrir le salon</a></p>
+    </div>
+  </section>
+
+  <section class="scene razor" aria-labelledby="t-rasage">
+    <div class="copy">
+      <h2 id="t-rasage">Le rasage à l'ancienne</h2>
+      <p>Une heure dédiée, avec des tracés de barbe faits selon un protocole italien. Chaque étape a son geste, et le coupe-chou ne sort qu'au bon moment.</p>
+      <ol class="steps">
+        <li><h3>La préparation</h3><p>Eau chaude, serviette chaude et huile de pré-rasage pour assouplir la peau.</p></li>
+        <li><h3>Le blaireau</h3><p>Savon ou crème à raser, montés en mousse au blaireau pour redresser le poil.</p></li>
+        <li><h3>Le coupe-chou</h3><p>La lame droite, affûtée, pour un rasage net et respectueux de la peau.</p></li>
+        <li><h3>Le baume</h3><p>Un après-rasage pour apaiser et hydrater, avant de repartir.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="scene menu" aria-labelledby="t-carte">
+    <div class="board">
+      <h2 id="t-carte">La carte</h2>
+      <ul class="prices">
+        {carte.map((p) => (
+          <li><span>{p.accueil.libelle}</span><span class="dots" aria-hidden="true"></span><span class="p">{p.prix}</span></li>
+        ))}
+      </ul>
+      <p class="note">Réduction étudiante appliquée au salon, pensez à la signaler. <a href={u('/prestations')}>Voir toute la carte</a>, avec les soins, lissages, permanentes et maquillages.</p>
+    </div>
+  </section>
+
+  <section class="scene story team" aria-labelledby="t-equipe">
+    <div class="copy">
+      <h2 id="t-equipe">Six passionnés, une même maison.</h2>
+      <ul class="crew">
+        {equipe.map((m) => (
+          <li><strong>{m.prenom}</strong><span>{m.court}</span></li>
+        ))}
+      </ul>
+      <p>Note de {avis.planity.noteTexte} sur plus de mille avis Planity. <a class="more" href={u('/equipe')}>Rencontrer l'équipe</a> ou <a class="more" href={u('/avis')}>lire les avis</a>.</p>
+    </div>
+  </section>
+
+  <section class="scene visit" aria-labelledby="t-visite">
+    <div class="copy">
+      <h2 id="t-visite">Poussez la porte</h2>
+      <p>{salon.adresse.rue}, {salon.adresse.codePostal} {salon.adresse.ville}. On vous fait asseoir, on s'occupe de vous.</p>
+      <dl class="hours">
+        {horaires.map((h) => (
+          <div><dt>{h.jours}</dt><dd>{h.texte}</dd></div>
+        ))}
+      </dl>
+      <a class="btn" href={salon.reservation} target="_blank" rel="noopener">Réserver sur Planity</a>
+      <a class="btn ghost" href={u('/contact')}>Nous écrire</a>
+      <p class="alt"><a href={`tel:${salon.telephoneInternational}`}>{salon.telephone}</a> ou <a href={`mailto:${salon.email}`}>{salon.email}</a></p>
+    </div>
+  </section>
+</Base>

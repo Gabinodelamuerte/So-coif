@@ -1,0 +1,59 @@
+---
+import { u } from '../utils/url';
+import Base from '../layouts/Base.astro';
+import salon from '../data/salon.json';
+import avis from '../data/avis.json';
+---
+<Base
+  title="Le salon | So Coif' Willems"
+  description="L'histoire de So Coif', salon de coiffure et barbier ouvert en 2007 à Willems : une équipe de six, conseil personnalisé, produits professionnels Keune."
+>
+  <div class="doc">
+    <h1>Le salon</h1>
+    <p class="intro">Un salon de quartier ouvert en 2007, où l'on prend le temps d'écouter avant de couper.</p>
+
+    <section>
+      <h2>Notre histoire</h2>
+      <p>So Coif' s'est construit autour d'une idée simple : que chaque client reparte avec une coupe qui lui ressemble et une expérience qui donne envie de revenir. Aujourd'hui, l'équipe de six réunit coiffeurs, coloristes et barbiers.</p>
+      <p>Le salon est tenu par JB, pour qui la coiffure est un art : travailler la matière, le volume et la lumière, ciseler, sculpter, sublimer. L'approche est la même pour une clientèle féminine ou masculine, cheveux courts ou longs, naturels ou colorés, avec ou sans barbe.</p>
+      <p>Chaque proposition part d'un diagnostic de vos cheveux et d'une étude de votre morphologie, pour une coupe ou une couleur qui vous va vraiment. Les habitués retiennent aussi un très bon rapport qualité-prix et des offres pour les étudiants.</p>
+      <ul class="facts">
+        <li><strong>19</strong><span>ans d'expérience</span></li>
+        <li><strong>6</strong><span>experts passionnés</span></li>
+        <li><strong>{avis.planity.noteTexte}</strong><span>sur Planity, plus de 1 000 avis</span></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Nos engagements</h2>
+      <!-- TODO gamme produits à confirmer : le site actuel met Keune en avant, Planity montre Davines, Ybera et Genoma. -->
+      <div class="cols">
+        <div><h3>Expertise Keune</h3><p>L'équipe est formée et certifiée aux techniques et aux produits de la gamme professionnelle Keune.</p></div>
+        <div><h3>Conseil personnalisé</h3><p>Chaque rendez-vous commence par un échange pour comprendre vos envies. Une consultation technique de 20 minutes est aussi proposée, dès 20 €.</p></div>
+        <div><h3>Produits de qualité</h3><p>Des soins haut de gamme, choisis pour des résultats durables et respectueux du cheveu.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Ce que l'on fait ici</h2>
+      <p>Des coupes pour toute la famille, du rasage à l'ancienne à la coiffure de mariage.</p>
+      <ul class="taglist">
+        <li>Coupe femme</li><li>Coupe homme</li><li>Coupe garçon et fille</li><li>Coiffeur enfant</li>
+        <li>Coloration</li><li>Mèches</li><li>Décoloration</li><li>Patine</li>
+        <li>Permanente</li><li>Lissage</li><li>Brushing</li><li>Cheveux longs</li>
+        <li>Soins profonds et capillaires</li><li>Taille de barbe</li><li>Rasage à l'ancienne</li>
+        <li>Coiffure de mariage</li><li>Chignon et bar à chignon</li><li>Offres étudiants</li>
+      </ul>
+      <p style="margin-top:1.5rem"><a class="more" href={u('/prestations')}>Voir les tarifs détaillés</a></p>
+    </section>
+
+    <section>
+      <h2>Bon à savoir</h2>
+      <div class="cols">
+        <div><h3>Accès</h3><p>Entrée et parking accessibles en fauteuil roulant, toilettes sur place, d'après la fiche Google du salon.</p></div>
+        <div><h3>Réservation</h3><p>En ligne 24 h sur 24 avec confirmation immédiate, via <a href={salon.reservation} target="_blank" rel="noopener">Planity</a>, ou par téléphone au <a href={`tel:${salon.telephoneInternational}`}>{salon.telephone}</a>.</p></div>
+        <div><h3>Réseaux</h3><p>Retrouvez le salon sur <a href={salon.facebook} target="_blank" rel="noopener">Facebook</a>, où il signe « La vie est belle ».</p></div>
+      </div>
+    </section>
+  </div>
+</Base>

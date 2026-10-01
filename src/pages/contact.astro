@@ -1,0 +1,114 @@
+---
+import Base from '../layouts/Base.astro';
+import { u } from '../utils/url';
+import salon from '../data/salon.json';
+// Mode d'envoi du formulaire, choisi à la construction du site (voir DEPLOIEMENT.md) :
+//  - Formspree si PUBLIC_FORM_ENDPOINT est défini ;
+//  - mailto si PUBLIC_FORM_MODE=mailto (hébergement sans back-end, ex. GitHub Pages) ;
+//  - sinon Netlify Forms.
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT as string | undefined;
+const mode = endpoint ? 'formspree' : import.meta.env.PUBLIC_FORM_MODE === 'mailto' ? 'mailto' : 'netlify';
+const options = [
+  'Coupe homme', "Rasage à l'ancienne", 'Coupe femme', 'Couleur ou mèches',
+  'Color Brilliance, 39 €', 'Nutrition Absolue, 29 €', 'Reconstruction Profonde, 49 €',
+  'Rituel Boucles Définies, 42 €', 'Blond Éclat Pur, 35 €', 'Permanente ou lissage',
+  'Maquillage', 'Anniversaire ou atelier', 'Autre ou question',
+];
+---
+<Base
+  schema
+  title="Contact et horaires | So Coif' Willems"
+  description="Contacter So Coif' à Willems : adresse, 27 rue Jean-Baptiste Lebas, téléphone 03 20 34 67 16, horaires d'ouverture et formulaire de contact."
+>
+  <div class="doc">
+    <h1>Contact et horaires</h1>
+    <p class="intro">Pour un rendez-vous immédiat, réservez en ligne. Pour une question, écrivez-nous ou appelez.</p>
+
+    <div class="contact-grid">
+      <div>
+        <h2>Nous trouver</h2>
+        <address class="coords">
+          <div><strong>Adresse</strong>{salon.adresse.rue}<br />{salon.adresse.codePostal} {salon.adresse.ville}<br /><a href={salon.carte} target="_blank" rel="noopener">Ouvrir dans Google Maps</a></div>
+          <div><strong>Téléphone</strong><a href={`tel:${salon.telephoneInternational}`}>{salon.telephone}</a></div>
+          <div><strong>E-mail</strong><a href={`mailto:${salon.email}`}>{salon.email}</a></div>
+          <div><strong>Réservation en ligne</strong><a href={salon.reservation} target="_blank" rel="noopener">Réserver sur Planity</a>, 24 h sur 24, confirmation immédiate</div>
+          <div><strong>Réseaux</strong><a href={salon.facebook} target="_blank" rel="noopener">Facebook</a></div>
+        </address>
+        <h2 style="margin-top:2rem">Horaires</h2>
+        <!-- TODO horaires à confirmer avec le salon (9h30 / 9h / 8h30 selon les sources). -->
+        <dl class="hours">
+          <div><dt>Lundi</dt><dd>Fermé</dd></div>
+          <div><dt>Mardi au vendredi</dt><dd>9h30 à 19h</dd></div>
+          <div><dt>Samedi</dt><dd>9h à 18h</dd></div>
+          <div><dt>Dimanche</dt><dd>Fermé</dd></div>
+        </dl>
+      </div>
+
+      <div>
+        <h2>Envoyez-nous un message</h2>
+        <form
+          class="msg" id="msgForm" name="contact" method="POST"
+          data-mode={mode} data-email={salon.email} data-merci={u('/merci')} data-endpoint={endpoint}
+          action={mode === 'formspree' ? endpoint : mode === 'mailto' ? `mailto:${salon.email}` : u('/merci')}
+          enctype={mode === 'mailto' ? 'text/plain' : undefined}
+          data-netlify={mode === 'netlify' ? 'true' : undefined}
+          netlify-honeypot={mode === 'netlify' ? '_gotcha' : undefined}
+        >
+          {mode === 'netlify' && <input type="hidden" name="form-name" value="contact" />}
+          <p class="honey" aria-hidden="true"><label>Ne pas remplir : <input name="_gotcha" tabindex="-1" autocomplete="off" /></label></p>
+          <div class="two">
+            <label>Prénom<input name="prenom" autocomplete="given-name" required /></label>
+            <label>Nom<input name="nom" autocomplete="family-name" required /></label>
+          </div>
+          <label>E-mail<input type="email" name="email" autocomplete="email" required /></label>
+          <label>Téléphone<input type="tel" name="tel" autocomplete="tel" /></label>
+          <label>Prestation souhaitée
+            <select name="presta">
+              <option value="">Choisir…</option>
+              {options.map((o) => <option>{o}</option>)}
+            </select>
+          </label>
+          <label>Message<textarea name="message" required></textarea></label>
+          <div><button class="btn" type="submit">Envoyer le message</button></div>
+          <p class="errmsg" id="errmsg" role="alert" hidden>
+            L'envoi n'a pas abouti. Réessayez, ou écrivez-nous à <a href={`mailto:${salon.email}`}>{salon.email}</a> ou appelez le <a href={`tel:${salon.telephoneInternational}`}>{salon.telephone}</a>.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</Base>
+
+<script>
+  // Envoi sans quitter la page quand c'est possible ; sans JavaScript, le formulaire
+  // s'envoie normalement (Netlify Forms, Formspree ou messagerie selon le mode).
+  const form = document.getElementById('msgForm') as HTMLFormElement | null;
+  const erreur = document.getElementById('errmsg');
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const mode = form.dataset.mode;
+      const d = new FormData(form);
+      if (d.get('_gotcha')) return; // robot : on ne fait rien
+      if (mode === 'mailto') {
+        const sujet = 'Demande via le site' + (d.get('presta') ? ' : ' + d.get('presta') : '');
+        const corps = `Prénom : ${d.get('prenom')}\nNom : ${d.get('nom')}\nE-mail : ${d.get('email')}\nTéléphone : ${d.get('tel') || ''}\nPrestation : ${d.get('presta') || ''}\n\n${d.get('message')}`;
+        window.location.href = `mailto:${form.dataset.email}?subject=${encodeURIComponent(sujet)}&body=${encodeURIComponent(corps)}`;
+        return;
+      }
+      const bouton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      bouton.disabled = true;
+      if (erreur) erreur.hidden = true;
+      try {
+        const rep = mode === 'formspree'
+          ? await fetch(form.dataset.endpoint as string, { method: 'POST', headers: { Accept: 'application/json' }, body: d })
+          : await fetch(import.meta.env.BASE_URL, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams(d as any).toString() });
+        if (!rep.ok) throw new Error(String(rep.status));
+        window.location.assign(form.dataset.merci as string);
+      } catch {
+        if (erreur) erreur.hidden = false;
+        bouton.disabled = false;
+      }
+    });
+  }
+</script>

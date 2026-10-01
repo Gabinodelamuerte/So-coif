@@ -1,0 +1,11 @@
+---
+import { u } from '../utils/url';
+import Base from '../layouts/Base.astro';
+---
+<Base noindex title="Page introuvable | So Coif' Willems" description="Cette page n'existe pas.">
+  <div class="doc">
+    <h1>Page introuvable</h1>
+    <p class="intro">Cette page n'existe pas, ou plus.</p>
+    <p><a class="btn" href={u('/')}>Retour à l'accueil</a><a class="btn ghost" href={u('/prestations')}>Voir les prestations</a></p>
+  </div>
+</Base>

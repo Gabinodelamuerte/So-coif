@@ -1,0 +1,8 @@
+{
+  "_aide": "Facultatif : décrivez chaque photo ici (clé = nom du fichier dans src/assets/galerie). Sans entrée, le texte alternatif est tiré du nom du fichier.",
+  "01-poste-barbier.jpg": "Le poste de barbier du salon : fauteuil en cuir noir, comptoir en bois de palette, miroir, blaireaux et produits de rasage",
+  "02-coupe-barbier-portrait.jpg": "Photo en noir et blanc d'un barbier barbu qui coiffe un client à la barbe soignée et à la coupe dégradée",
+  "03-espace-shampoing.jpg": "L'espace shampoing du salon : deux bacs avec fauteuils noirs, plafond en lattes de bois et étagères de soins capillaires",
+  "04-coupe-precision.jpg": "Gros plan en noir et blanc d'un barbier qui coiffe les cheveux d'un client",
+  "05-jb-dyson.jpg": "Le gérant, JB, souriant devant un mur de sèche-cheveux Dyson, pointant les appareils du doigt"
+}

@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+import salon from '../data/salon.json';
+const l = salon.legal;
+const hebergeur = import.meta.env.PUBLIC_HOST === 'github' ? l.hebergeurGithub : l.hebergeur;
+const modeMailto = !import.meta.env.PUBLIC_FORM_ENDPOINT && import.meta.env.PUBLIC_FORM_MODE === 'mailto';
+---
+<Base
+  title="Mentions légales | So Coif' Willems"
+  description="Mentions légales du site de So Coif', coiffeur et barbier à Willems."
+>
+  <div class="doc legal">
+    <h1>Mentions légales</h1>
+    <p class="intro">Informations sur ce site et sur le salon.</p>
+    <section>
+      <h2>Ce site</h2>
+      <p>Ce site est une maquette non officielle, réalisée à partir des informations publiques du salon (site socoif.com, page Planity, annuaires). Elle n'a pas été validée par So Coif'.</p>
+    </section>
+    <section>
+      <h2>Le salon</h2>
+      <!-- TODO SIREN, SIRET, NAF : issus d'annuaires, à faire valider par le salon. Directeur de la publication à confirmer. -->
+      <ul>
+        <li>Enseigne : {salon.nom}</li>
+        <li>Adresse : {salon.adresse.rue}, {salon.adresse.codePostal} {salon.adresse.ville}</li>
+        <li>Téléphone : {salon.telephone}</li>
+        <li>E-mail : {salon.email}</li>
+        <li>Activité : coiffure (code NAF {l.naf}), {l.forme}</li>
+        <li>SIREN {l.siren}, SIRET {l.siret}</li>
+        <li>Directeur de la publication : à confirmer avec le salon</li>
+      </ul>
+      <p>Ces informations proviennent d'annuaires publics d'entreprises et doivent être confirmées par le salon avant toute mise en ligne officielle.</p>
+    </section>
+    <section>
+      <h2>Hébergement</h2>
+      <p>{hebergeur}.</p>
+    </section>
+    <section>
+      <h2>Données personnelles</h2>
+      <p>Ce site n'utilise aucun cookie de suivi. {modeMailto
+          ? "Le formulaire de contact ne transmet rien lui-même : il prépare un e-mail dans votre application de messagerie, que vous choisissez d'envoyer ou non."
+          : "Les données saisies dans le formulaire de contact (prénom, nom, e-mail, téléphone facultatif, message) sont transmises au salon par un service tiers, uniquement pour répondre à votre demande."} Elles ne sont ni revendues ni utilisées à d'autres fins. Pour demander l'accès ou la suppression de vos données, écrivez à <a href={`mailto:${salon.email}`}>{salon.email}</a>. La réservation se fait sur Planity, soumise à ses propres conditions.</p>
+    </section>
+    <section>
+      <h2>Crédits</h2>
+      <p>Polices Bevan et IM Fell English (licence SIL Open Font), servies depuis ce site. Scène 3D réalisée avec Three.js.</p>
+    </section>
+  </div>
+</Base>
