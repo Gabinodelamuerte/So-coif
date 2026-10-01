@@ -1,0 +1,12 @@
+---
+import Base from '../layouts/Base.astro';
+import salon from '../data/salon.json';
+---
+<Base noindex title="Message envoyé | So Coif' Willems" description="Votre message a bien été envoyé à So Coif'.">
+  <div class="doc">
+    <h1>Merci !</h1>
+    <p class="intro">Votre message a bien été envoyé. Le salon vous répondra dès que possible.</p>
+    <p>Pour un rendez-vous immédiat, utilisez Planity ou appelez le <a href={`tel:${salon.telephoneInternational}`}>{salon.telephone}</a>.</p>
+    <p><a class="btn" href={salon.reservation} target="_blank" rel="noopener">Réserver sur Planity</a><a class="btn ghost" href="/">Retour à l'accueil</a></p>
+  </div>
+</Base>

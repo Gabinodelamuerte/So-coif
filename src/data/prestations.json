@@ -1,0 +1,353 @@
+{
+  "_aide": "Fichier modifiable sans toucher au code : chaque catégorie a un id, un libellé de filtre, un titre, une introduction facultative et une liste de prestations (nom, prix, duree, description). Le champ 'accueil' (libelle court + ordre) fait apparaître la prestation sur la carte de la page d'accueil. Le champ 'verifier' est une note interne, jamais affichée.",
+  "introduction": "La carte complète du salon. Réduction étudiante appliquée au salon sur la plupart des prestations, pensez à la signaler.",
+  "noteBasDePage": "Tarifs relevés sur la page Planity du salon et sur son site. Ils peuvent évoluer : le salon reste la référence.",
+  "categories": [
+    {
+      "id": "consult",
+      "filtre": "Consultation",
+      "titre": "Consultation",
+      "prestations": [
+        {
+          "nom": "Consultation technique",
+          "prix": "dès 20 €",
+          "duree": "30 min",
+          "description": "Vingt minutes qui vous sont dédiées pour parler conseils, devis, routine capillaire, balayage ou couleur. Possibilité d'un cours d'auto-coiffage sur cheveux propres.",
+          "accueil": {
+            "libelle": "Consultation technique",
+            "ordre": 8
+          }
+        }
+      ]
+    },
+    {
+      "id": "homme",
+      "filtre": "Homme et barbier",
+      "titre": "Homme et barbier",
+      "prestations": [
+        {
+          "nom": "Coupe homme",
+          "prix": "29 €",
+          "duree": "30 min",
+          "accueil": {
+            "libelle": "Coupe homme",
+            "ordre": 1
+          }
+        },
+        {
+          "nom": "Coupe étudiant et enfant garçon",
+          "prix": "25 €",
+          "duree": "30 min",
+          "accueil": {
+            "libelle": "Coupe étudiant et enfant garçon",
+            "ordre": 2
+          }
+        },
+        {
+          "nom": "Coupe et rasage à l'ancienne",
+          "prix": "69 €",
+          "duree": "1 h",
+          "description": "Tracés de barbe selon un protocole italien : coupe-chou, blaireau, savon ou crème, préparation à l'eau chaude, serviette chaude, huile de pré-rasage et baume après-rasage.",
+          "accueil": {
+            "libelle": "Coupe et rasage à l'ancienne",
+            "ordre": 3
+          },
+          "verifier": "Prix : 68 € ou 69 € selon la source, à confirmer avec le salon (la maquette utilise 69 €)"
+        },
+        {
+          "nom": "Coupe, taille de barbe (tondeuse) et soin de barbe",
+          "prix": "53 €",
+          "duree": "45 min",
+          "accueil": {
+            "libelle": "Coupe, taille de barbe et soin",
+            "ordre": 4
+          }
+        },
+        {
+          "nom": "Coupe, taille de barbe et tracé au gel de rasage",
+          "prix": "61 €",
+          "duree": "45 min"
+        },
+        {
+          "nom": "Rasage de crâne",
+          "prix": "21 €",
+          "duree": "15 min"
+        }
+      ]
+    },
+    {
+      "id": "femme",
+      "filtre": "Femme",
+      "titre": "Femme",
+      "intro": "Un supplément peut s'appliquer si le démêlage demande plus de temps, et un soin peut être ajouté pour préserver le cheveu.",
+      "prestations": [
+        {
+          "nom": "Coupe courte et séchage (sous les oreilles)",
+          "prix": "41 €",
+          "duree": "30 min",
+          "accueil": {
+            "libelle": "Coupe courte femme et séchage",
+            "ordre": 5
+          }
+        },
+        {
+          "nom": "Shampoing, coupe et brushing, cheveux mi-longs",
+          "prix": "48 €",
+          "duree": "30 min",
+          "description": "Cheveux sur les épaules.",
+          "accueil": {
+            "libelle": "Shampoing, coupe, brushing mi-longs",
+            "ordre": 6
+          }
+        },
+        {
+          "nom": "Coupe et brushing, cheveux longs",
+          "prix": "55 €",
+          "duree": "50 min",
+          "description": "Cheveux sous les épaules."
+        },
+        {
+          "nom": "Couleur, coupe et brushing",
+          "prix": "76 à 108 €",
+          "duree": "1 h 30",
+          "description": "Le prix dépend de l'épaisseur et de la longueur : 76 € cheveux courts, 86 € mi-longs, 108 € longs.",
+          "accueil": {
+            "libelle": "Couleur, coupe et brushing",
+            "ordre": 7
+          }
+        },
+        {
+          "nom": "Coupe courte et séchage, avec JB",
+          "prix": "45 €",
+          "duree": "30 min",
+          "description": "Coupe sur cheveux courts uniquement, sans brushing, un séchage naturel suffit."
+        }
+      ]
+    },
+    {
+      "id": "technique",
+      "filtre": "Permanente et lissage",
+      "titre": "Permanente et lissage",
+      "intro": "Réduction étudiante possible, à signaler.",
+      "prestations": [
+        {
+          "nom": "Permanente, shampoing, coupe et brushing, cheveux courts",
+          "prix": "90 €",
+          "duree": "1 h 30"
+        },
+        {
+          "nom": "Permanente, shampoing, coupe et brushing, mi-longs",
+          "prix": "119 €",
+          "duree": "2 h"
+        },
+        {
+          "nom": "Permanente, shampoing, coupe et brushing, longs",
+          "prix": "164 €",
+          "duree": "2 h 30"
+        },
+        {
+          "nom": "Lissage brésilien Ybera Discovery, cheveux courts",
+          "prix": "233 €",
+          "duree": "2 h 30",
+          "description": "Lissage sans formol, aux actifs naturels à base de cellules souches de pomme suisse, qui restructure aussi le cheveu."
+        },
+        {
+          "nom": "Lissage Ybera Discovery, mi-longs",
+          "prix": "303 €",
+          "duree": "3 h"
+        },
+        {
+          "nom": "Lissage Ybera Discovery, longs",
+          "prix": "372 €",
+          "duree": "3 h"
+        },
+        {
+          "nom": "Lissage Ybera Discovery, très longs",
+          "prix": "404 €",
+          "duree": "3 h"
+        }
+      ]
+    },
+    {
+      "id": "soins",
+      "filtre": "Soins",
+      "titre": "Soins",
+      "intro": "Soins au bac, soins reconstructeurs et forfaits, brushing compris pour les forfaits.",
+      "prestations": [
+        {
+          "nom": "Après-shampooing",
+          "prix": "6 €",
+          "duree": "10 min"
+        },
+        {
+          "nom": "Masque profond",
+          "prix": "14 €",
+          "duree": "10 min"
+        },
+        {
+          "nom": "Soin Davines Tailoring",
+          "prix": "18 €",
+          "duree": "5 min",
+          "description": "Un soin sur mesure à base d'infusions de plantes, avec 24 combinaisons possibles, sans temps de pose."
+        },
+        {
+          "nom": "Soin à la kératine",
+          "prix": "30 €",
+          "duree": "30 min",
+          "description": "Réparation et nutrition, effet cosmétique immédiat et durable."
+        },
+        {
+          "nom": "Soin réparateur Genoma, cheveux courts",
+          "prix": "91 €",
+          "duree": "2 h",
+          "description": "Reconstruit la fibre capillaire et se recommande avant toute technique. Effet de 2 à 3 mois."
+        },
+        {
+          "nom": "Soin Genoma, mi-longs",
+          "prix": "117 €",
+          "duree": "2 h 30"
+        },
+        {
+          "nom": "Soin Genoma, longs",
+          "prix": "137 €",
+          "duree": "2 h 30"
+        },
+        {
+          "nom": "Soin Genoma, très longs",
+          "prix": "161 €",
+          "duree": "2 h 45"
+        },
+        {
+          "nom": "Bot capillaire Ybera profond, cheveux courts",
+          "prix": "132 €",
+          "duree": "2 h 40",
+          "description": "Un soin reconstructeur qui répare le cheveu jusqu'au cortex pour 3 à 5 mois avec la gamme d'entretien, et facilite le coiffage."
+        },
+        {
+          "nom": "Bot capillaire Ybera profond, mi-longs",
+          "prix": "159 €",
+          "duree": "2 h 40"
+        },
+        {
+          "nom": "Bot capillaire Ybera profond, longs",
+          "prix": "209 €",
+          "duree": "2 h 55"
+        },
+        {
+          "nom": "Bot capillaire Ybera profond, très longs",
+          "prix": "239 €",
+          "duree": "2 h 50"
+        },
+        {
+          "nom": "Bot capillaire Ybera express, cheveux courts",
+          "prix": "81 €",
+          "duree": "1 h 30",
+          "description": "D'autres formules express existent, à demander au salon."
+        }
+      ]
+    },
+    {
+      "id": "keune",
+      "filtre": "Soins Keune",
+      "titre": "Soins Keune",
+      "intro": "La gamme professionnelle Keune, choisie pour révéler la beauté naturelle de la chevelure.",
+      "prestations": [
+        {
+          "nom": "Color Brilliance",
+          "prix": "39 €",
+          "description": "Soin d'entretien pour la coloration : éclat, brillance et résultat durable."
+        },
+        {
+          "nom": "Nutrition Absolue",
+          "prix": "29 €",
+          "description": "Soin profond qui nourrit et hydrate, pour retrouver souplesse, douceur et vitalité."
+        },
+        {
+          "nom": "Reconstruction Profonde",
+          "prix": "49 €",
+          "description": "Traitement réparateur intensif pour cheveux abîmés, qui restaure la fibre capillaire."
+        },
+        {
+          "nom": "Rituel Boucles Définies",
+          "prix": "42 €",
+          "description": "Soin profond pour la définition et la mise en forme des cheveux bouclés."
+        },
+        {
+          "nom": "Blond Éclat Pur",
+          "prix": "35 €",
+          "description": "Soin profond spécial blonds, pour raviver l'éclat et neutraliser les reflets indésirables."
+        }
+      ]
+    },
+    {
+      "id": "makeup",
+      "filtre": "Maquillage",
+      "titre": "Maquillage",
+      "intro": "Aucune réduction étudiante sur le maquillage.",
+      "prestations": [
+        {
+          "nom": "Maquillage express",
+          "prix": "20 €",
+          "duree": "15 min",
+          "description": "Bronzer, blush, highlighter, lèvres, fond de teint, anticernes et poudre, pour un rendez-vous ou une sortie de dernière minute."
+        },
+        {
+          "nom": "Maquillage enfant",
+          "prix": "15 €",
+          "duree": "10 min",
+          "description": "Blush, lèvres, paillettes et mascara, doux et léger."
+        },
+        {
+          "nom": "Retouche maquillage",
+          "prix": "10 €",
+          "duree": "10 min",
+          "description": "Bronzer, blush, highlighter et lèvres."
+        },
+        {
+          "nom": "Maquillage complet",
+          "prix": "30 à 40 €",
+          "duree": "45 min",
+          "description": "Sourcils, teint, anticernes, bronzer, blush, highlighter, mascara, lèvres et spray fixateur."
+        }
+      ]
+    },
+    {
+      "id": "fete",
+      "filtre": "Anniversaires et ateliers",
+      "titre": "Anniversaires et ateliers",
+      "intro": "Ces formules ne se réservent pas en ligne : appelez ou écrivez au salon. Prix pour 4, 6, 8 ou 10 personnes.",
+      "prestations": [
+        {
+          "nom": "Anniversaire, formule 1",
+          "prix": "120 à 300 €",
+          "duree": "2 h",
+          "description": "Maquillage, coiffure, vernis et photos. 4 pers. 120 €, 6 pers. 180 €, 8 pers. 240 €, 10 pers. 300 €."
+        },
+        {
+          "nom": "Anniversaire, formule 2",
+          "prix": "140 à 350 €",
+          "duree": "2 h 15",
+          "description": "Formule 1 avec shooting photo et accessoires, plus un cadeau par personne. 4 pers. 140 €, 6 pers. 210 €, 8 pers. 280 €, 10 pers. 350 €."
+        },
+        {
+          "nom": "Anniversaire, formule 3",
+          "prix": "155 à 375 €",
+          "duree": "2 h 45",
+          "description": "Formule 2 avec goûter. 4 pers. 155 €, 6 pers. 225 €, 8 pers. 300 €, 10 pers. 375 €."
+        },
+        {
+          "nom": "Anniversaire, formule 4",
+          "prix": "175 à 395 €",
+          "duree": "3 h",
+          "description": "Formule 3 avec décoration, et un cadeau par enfant. 4 pers. 175 €, 6 pers. 245 €, 8 pers. 320 €, 10 pers. 395 €."
+        },
+        {
+          "nom": "Atelier mère et fille",
+          "prix": "30 € le duo",
+          "duree": "2 h",
+          "description": "15 € par personne, le dimanche seulement. On apprend ensemble plusieurs coiffures faciles à refaire à la maison. Renseignements par téléphone ou message sur les réseaux."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+[
+  { "monogramme": "JB", "nom": "Jean-Benoît Duforest", "role": "Gérant", "texte": "Il pilote le développement et la stratégie du salon avec passion. C'est JB que l'on retrouve aussi aux ciseaux, par exemple pour les coupes courtes femme.", "court": "Gérant, JB pour les habitués", "prenom": "Jean-Benoît" },
+  { "monogramme": "L", "nom": "Lorena Winne", "role": "Responsable du salon et coiffeuse", "texte": "Passionnée de technique et de colorimétrie, spécialiste des techniques Keune. Elle accompagne chaque cliente vers sa meilleure version.", "court": "Responsable du salon, coloriste", "prenom": "Lorena" },
+  { "monogramme": "I", "nom": "Illan", "role": "Apprenti coiffeur et barbier", "texte": "Passionné par toutes les coupes modernes, il apporte son œil de barbier et son sens du détail.", "court": "Coiffeur et barbier", "prenom": "Illan" },
+  { "monogramme": "N", "nom": "Nathan", "role": "Apprenti coiffeur homme", "texte": "Créatif, plein d'idées neuves et fraîches pour les coupes masculines.", "court": "Apprenti coiffeur homme", "prenom": "Nathan" },
+  { "monogramme": "S", "nom": "Serena", "role": "Apprentie coiffeuse", "texte": "Talentueuse et passionnée par toutes les techniques de mèches et de coloration.", "court": "Apprentie, mèches et couleur", "prenom": "Serena" },
+  { "monogramme": "C", "nom": "Camille", "role": "Apprentie", "texte": "Enthousiaste, elle s'est spécialisée dans les soins capillaires.", "court": "Apprentie, soins capillaires", "prenom": "Camille" }
+]

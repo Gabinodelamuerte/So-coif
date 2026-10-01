@@ -1,0 +1,90 @@
+---
+import Base from '../layouts/Base.astro';
+import salon from '../data/salon.json';
+const options = [
+  'Coupe homme', "Rasage à l'ancienne", 'Coupe femme', 'Couleur ou mèches',
+  'Color Brilliance, 39 €', 'Nutrition Absolue, 29 €', 'Reconstruction Profonde, 49 €',
+  'Rituel Boucles Définies, 42 €', 'Blond Éclat Pur, 35 €', 'Permanente ou lissage',
+  'Maquillage', 'Anniversaire ou atelier', 'Autre ou question',
+];
+---
+<Base
+  schema
+  title="Contact et horaires | So Coif' Willems"
+  description="Contacter So Coif' à Willems : adresse, 27 rue Jean-Baptiste Lebas, téléphone 03 20 34 67 16, horaires d'ouverture et formulaire de contact."
+>
+  <div class="doc">
+    <h1>Contact et horaires</h1>
+    <p class="intro">Pour un rendez-vous immédiat, réservez en ligne. Pour une question, écrivez-nous ou appelez.</p>
+
+    <div class="contact-grid">
+      <div>
+        <h2>Nous trouver</h2>
+        <address class="coords">
+          <div><strong>Adresse</strong>{salon.adresse.rue}<br />{salon.adresse.codePostal} {salon.adresse.ville}<br /><a href={salon.carte} target="_blank" rel="noopener">Ouvrir dans Google Maps</a></div>
+          <div><strong>Téléphone</strong><a href={`tel:${salon.telephoneInternational}`}>{salon.telephone}</a></div>
+          <div><strong>E-mail</strong><a href={`mailto:${salon.email}`}>{salon.email}</a></div>
+          <div><strong>Réservation en ligne</strong><a href={salon.reservation} target="_blank" rel="noopener">Réserver sur Planity</a>, 24 h sur 24, confirmation immédiate</div>
+          <div><strong>Réseaux</strong><a href={salon.facebook} target="_blank" rel="noopener">Facebook</a></div>
+        </address>
+        <h2 style="margin-top:2rem">Horaires</h2>
+        <!-- TODO horaires à confirmer avec le salon (9h30 / 9h / 8h30 selon les sources). -->
+        <dl class="hours">
+          <div><dt>Lundi</dt><dd>Fermé</dd></div>
+          <div><dt>Mardi au vendredi</dt><dd>9h30 à 19h</dd></div>
+          <div><dt>Samedi</dt><dd>9h à 18h</dd></div>
+          <div><dt>Dimanche</dt><dd>Fermé</dd></div>
+        </dl>
+      </div>
+
+      <div>
+        <h2>Envoyez-nous un message</h2>
+        <form class="msg" id="msgForm" name="contact" method="POST" action="/merci" data-netlify="true" netlify-honeypot="champ-piege">
+          <input type="hidden" name="form-name" value="contact" />
+          <p class="honey" aria-hidden="true"><label>Ne pas remplir : <input name="champ-piege" tabindex="-1" autocomplete="off" /></label></p>
+          <div class="two">
+            <label>Prénom<input name="prenom" autocomplete="given-name" required /></label>
+            <label>Nom<input name="nom" autocomplete="family-name" required /></label>
+          </div>
+          <label>E-mail<input type="email" name="email" autocomplete="email" required /></label>
+          <label>Téléphone<input type="tel" name="tel" autocomplete="tel" /></label>
+          <label>Prestation souhaitée
+            <select name="presta">
+              <option value="">Choisir…</option>
+              {options.map((o) => <option>{o}</option>)}
+            </select>
+          </label>
+          <label>Message<textarea name="message" required></textarea></label>
+          <div><button class="btn" type="submit">Envoyer le message</button></div>
+          <p class="errmsg" id="errmsg" role="alert" hidden>
+            L'envoi n'a pas abouti. Réessayez, ou écrivez-nous à <a href={`mailto:${salon.email}`}>{salon.email}</a> ou appelez le <a href={`tel:${salon.telephoneInternational}`}>{salon.telephone}</a>.
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</Base>
+
+<script>
+  // Envoi sans quitter la page quand c'est possible ; sans JavaScript, le formulaire
+  // s'envoie normalement vers /merci (Netlify Forms).
+  const form = document.getElementById('msgForm') as HTMLFormElement | null;
+  const erreur = document.getElementById('errmsg');
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const bouton = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+      bouton.disabled = true;
+      if (erreur) erreur.hidden = true;
+      try {
+        const corps = new URLSearchParams(new FormData(form) as any).toString();
+        const rep = await fetch('/', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: corps });
+        if (!rep.ok) throw new Error(String(rep.status));
+        window.location.assign('/merci');
+      } catch {
+        if (erreur) erreur.hidden = false;
+        bouton.disabled = false;
+      }
+    });
+  }
+</script>

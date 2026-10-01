@@ -1,0 +1,22 @@
+{
+  "_todo": "TODO : remplacer les résumés ci-dessous par de vrais avis (texte et prénom) fournis par le salon. Rafraîchir la note Google depuis la fiche officielle. Ne jamais reprendre les faux avis d'exemple de l'ancien site.",
+  "planity": {
+    "note": 5.0,
+    "noteTexte": "5,0",
+    "nombre": 1092,
+    "nombreTexte": "1 092",
+    "details": [
+      { "libelle": "Accueil", "note": "5,0" },
+      { "libelle": "Propreté", "note": "5,0" },
+      { "libelle": "Cadre et ambiance", "note": "5,0" },
+      { "libelle": "Qualité de la prestation", "note": "5,0" }
+    ]
+  },
+  "google": "4,9 sur 5, sur plus de 120 avis d'après les annuaires. Chiffre à rafraîchir depuis la fiche officielle.",
+  "facebook": "94 % de recommandations sur 14 avis, et une page suivie par plus de 700 personnes.",
+  "resumes": [
+    { "texte": "Un habitué salue une belle prestation « comme d'habitude », et félicite les jeunes de l'équipe pour leur investissement.", "source": "Avis Planity, septembre 2026" },
+    { "texte": "Un client du rasage à l'ancienne y voit l'endroit où il faut aller. Il remarque les produits américains et italiens, et la simplicité et la gentillesse rare du coiffeur.", "source": "Avis Planity, septembre 2026" },
+    { "texte": "Une cliente arrivée en détresse capillaire a trouvé chez Lorena des réponses et une solution, appréciant sa technique, son temps et ses conseils. Elle a ensuite été coiffée par Serena, décrite comme adorable.", "source": "Avis Planity, septembre 2026" }
+  ]
+}

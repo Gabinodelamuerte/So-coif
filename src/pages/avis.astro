@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+import salon from '../data/salon.json';
+import avis from '../data/avis.json';
+const p = avis.planity;
+---
+<Base
+  title="Avis clients | So Coif' Willems"
+  description={`So Coif' est noté ${p.noteTexte} sur 5 sur Planity, sur plus de ${p.nombreTexte} avis vérifiés. Ce que racontent les clients du salon de Willems.`}
+>
+  <div class="doc">
+    <h1>Avis clients</h1>
+    <p class="intro">Le salon est noté {p.noteTexte} sur Planity, et répond personnellement à chaque avis.</p>
+
+    <div class="score">
+      <strong>{p.noteTexte}</strong>
+      <div><div class="stars" role="img" aria-label="5 étoiles sur 5">★★★★★</div><div>sur {p.nombreTexte} avis vérifiés Planity</div></div>
+    </div>
+    <dl class="subs">
+      {p.details.map((d) => <div><dt>{d.libelle}</dt><dd>{d.note}</dd></div>)}
+    </dl>
+
+    <section>
+      <h2>Ailleurs sur le web</h2>
+      <!-- TODO : rafraîchir la note Google depuis la fiche officielle. -->
+      <div class="cols">
+        <div><h3>Google</h3><p>{avis.google}</p></div>
+        <div><h3>Facebook</h3><p>{avis.facebook}</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Ce que racontent les clients</h2>
+      <!-- TODO : remplacer ces résumés par de vrais avis fournis par le salon (src/data/avis.json). -->
+      <p>Résumé de quelques avis récents laissés sur Planity.</p>
+      <ul class="voices">
+        {avis.resumes.map((r) => <li><p>{r.texte}</p><small>{r.source}</small></li>)}
+      </ul>
+      <p style="margin-top:1.5rem"><a class="btn" href={salon.reservation} target="_blank" rel="noopener">Laisser un avis sur Planity</a></p>
+    </section>
+  </div>
+</Base>

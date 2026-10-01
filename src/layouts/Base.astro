@@ -1,0 +1,138 @@
+---
+import '@fontsource/bevan/latin-400.css';
+import '@fontsource/bevan/latin-ext-400.css';
+import '@fontsource/im-fell-english/latin-400.css';
+import '@fontsource/im-fell-english/latin-400-italic.css';
+import '../styles/global.css';
+import salon from '../data/salon.json';
+import prestations from '../data/prestations.json';
+import avis from '../data/avis.json';
+import Footer from '../components/Footer.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  home?: boolean;
+  noindex?: boolean;
+  schema?: boolean;
+}
+const { title, description, home = false, noindex = false, schema = false } = Astro.props;
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const canonical = new URL(path, Astro.site).href;
+const ogImage = new URL('/og-image.jpg', Astro.site).href;
+
+const liens = [
+  { href: '/', label: 'Accueil' },
+  { href: '/salon', label: 'Le salon' },
+  { href: '/prestations', label: 'Prestations' },
+  { href: '/equipe', label: 'Équipe' },
+  { href: '/galerie', label: 'Galerie' },
+  { href: '/avis', label: 'Avis' },
+  { href: '/contact', label: 'Contact' },
+];
+
+// Données structurées HairSalon (adresse, horaires, téléphone, avis agrégés, prestations principales)
+const principales = prestations.categories
+  .flatMap((c) => c.prestations)
+  .filter((p) => (p as any).accueil)
+  .sort((a: any, b: any) => a.accueil.ordre - b.accueil.ordre);
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'HairSalon',
+  '@id': `${salon.url}/#salon`,
+  name: salon.nom,
+  url: salon.url + '/',
+  image: ogImage,
+  telephone: salon.telephoneInternational,
+  email: salon.email,
+  foundingDate: '2007',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: salon.adresse.rue,
+    postalCode: salon.adresse.codePostal,
+    addressLocality: salon.adresse.ville,
+    addressRegion: salon.adresse.region,
+    addressCountry: salon.adresse.pays,
+  },
+  openingHoursSpecification: salon.horaires
+    .filter((h: any) => h.ouvre)
+    .map((h: any) => ({ '@type': 'OpeningHoursSpecification', dayOfWeek: h.dayOfWeek, opens: h.ouvre, closes: h.ferme })),
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: avis.planity.note.toFixed(1),
+    reviewCount: avis.planity.nombre,
+    bestRating: '5',
+    worstRating: '1',
+  },
+  sameAs: [salon.facebook, salon.reservation],
+  potentialAction: { '@type': 'ReserveAction', target: salon.reservation },
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Prestations principales',
+    itemListElement: principales.map((p: any) => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name: p.accueil.libelle },
+      priceSpecification: { '@type': 'PriceSpecification', priceCurrency: 'EUR', price: (p.prix.match(/\d+/) ?? [''])[0] },
+    })),
+  },
+};
+---
+<!doctype html>
+<html lang="fr" class={home ? 'is-home' : ''}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <meta name="theme-color" content="#24160f" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:site_name" content={salon.nom} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Le poste de barbier du salon So Coif' à Willems" />
+    <meta name="twitter:card" content="summary_large_image" />
+    {schema && <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+  </head>
+  <body>
+    <a class="skip" href="#contenu">Aller au contenu</a>
+    {home && <canvas id="gl" aria-hidden="true"></canvas>}
+    {home && <div class="css-pole" aria-hidden="true"></div>}
+    <div class="grain" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+    <div class="dot" id="dot" aria-hidden="true"><span></span></div>
+
+    <header class="nav" id="nav">
+      <a class="brand" href="/">So Coif'</a>
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="navLinks">Menu</button>
+      <nav aria-label="Navigation principale">
+        <ul class="links" id="navLinks">
+          {liens.map((l) => (
+            <li><a href={l.href} aria-current={path === l.href ? 'page' : undefined}>{l.label}</a></li>
+          ))}
+          <li><a class="book" href={salon.reservation} target="_blank" rel="noopener">Réserver</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    {home && <button class="snd" id="snd" type="button" aria-pressed="false" hidden>Son coupé</button>}
+
+    <main id="contenu">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <script>
+      import '../scripts/commun.js';
+    </script>
+    {home && <script>import '../scripts/accueil.js';</script>}
+  </body>
+</html>

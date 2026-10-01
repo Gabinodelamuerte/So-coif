@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import equipe from '../data/equipe.json';
+---
+<Base
+  title="L'équipe | So Coif' Willems"
+  description="Rencontrez l'équipe de So Coif' à Willems : six passionnés, coiffeurs, coloristes et barbiers, formés aux techniques Keune."
+>
+  <div class="doc">
+    <h1>L'équipe</h1>
+    <p class="intro">Une équipe soudée, formée aux techniques Keune, qui allie savoir-faire et bienveillance.</p>
+    <ul class="teamlist">
+      {equipe.map((m) => (
+        <li>
+          <div class="mono" aria-hidden="true">{m.monogramme}</div>
+          <div><h2 class="nom">{m.nom}</h2><p class="role">{m.role}</p><p>{m.texte}</p></div>
+        </li>
+      ))}
+    </ul>
+    <section>
+      <h2>Ce qui les réunit</h2>
+      <div class="cols">
+        <div><h3>Expertise Keune</h3><p>Formées et certifiées aux produits et aux techniques Keune.</p></div>
+        <div><h3>Écoute personnalisée</h3><p>Chaque consultation est unique et adaptée à vos besoins.</p></div>
+      </div>
+      <p style="margin-top:1.5rem"><a class="more" href="/avis">Voir ce qu'en disent les clients</a></p>
+    </section>
+  </div>
+</Base>
